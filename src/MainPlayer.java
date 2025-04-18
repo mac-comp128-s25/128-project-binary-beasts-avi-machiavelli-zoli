@@ -25,7 +25,6 @@ public class MainPlayer implements Character {
     }
 
     public boolean attack(Character target){
-        Random rand = new Random();
         double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
         if(hitChance > hitDouble){ // if the attack lands
             double critDouble = rand.nextDouble(); // new random double in order to check whether crit or not
@@ -47,8 +46,6 @@ public class MainPlayer implements Character {
         }
     }
 
-
-
     @Override
     public double getHealth() {
         return health;
@@ -56,7 +53,7 @@ public class MainPlayer implements Character {
 
     @Override
     public void setHealth(double input) {
-        health=input;
+        health = input;
     }
 
     @Override
@@ -69,6 +66,4 @@ public class MainPlayer implements Character {
         return priority;
     }
 
-    
-    
 }
