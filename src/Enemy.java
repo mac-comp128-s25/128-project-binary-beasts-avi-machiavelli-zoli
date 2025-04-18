@@ -26,7 +26,7 @@ public class Enemy implements Character{
         health = newHealth;
     }
 
-    public boolean attack(){
+    public boolean attack(Character ){
         if(checkIfHit(chanceToHit)){
             // here do the actual setting of health and stuff
 
