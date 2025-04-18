@@ -4,7 +4,7 @@ public interface Character {
 
     public double getHealth();
 
-    public void setHealth();
+    public void setHealth(double num);
 
     // we must override the compareTo and equals methods for these objects so we can give certain characters certain priorities
     public int compareTo();

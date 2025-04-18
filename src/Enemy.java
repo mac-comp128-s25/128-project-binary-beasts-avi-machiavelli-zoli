@@ -51,4 +51,22 @@ public class Enemy implements Character{
             return false;
         }
     }
+
+    @Override
+    public boolean attack(Character target) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'attack'");
+    }
+
+    @Override
+    public int compareTo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
+    }
+
+    @Override
+    public boolean equals() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'equals'");
+    }
 }
