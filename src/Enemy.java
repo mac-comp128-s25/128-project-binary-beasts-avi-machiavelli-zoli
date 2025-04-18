@@ -5,16 +5,16 @@ public class Enemy implements Character{
     private double health;
     private double critMultiplier;
     private double critChance;
-    private int priority;
-    private double chanceToHit;
+    private double priority;
+    private double hitChance;
     private double attackDamage;
 
-    public Enemy(double health, double critMultiplier, double critChance, int priority, double chanceToHit, double attackDamage){
+    public Enemy(double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
         this.health = health;
         this.critMultiplier = critMultiplier;
         this.critChance = critChance;
         this.priority = priority;
-        this.chanceToHit = chanceToHit;
+        this.hitChance = hitChance;
         this.attackDamage = attackDamage;
     }
 
@@ -26,47 +26,33 @@ public class Enemy implements Character{
         health = newHealth;
     }
 
-    public boolean attack(){
-        if(checkIfHit(chanceToHit)){
-            // here do the actual setting of health and stuff
 
+    
+    public boolean attack(Character target){
+        Random rand = new Random();
+        double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
+        if(hitChance > hitDouble){ // if the attack lands
+            double critDouble = rand.nextDouble(); // new random double in order to check whether crit or not
+            double damageDone = attackDamage; // variable that tracks the total damage we will do. will be increased if crit, will stay same if not
+            if(critChance > critDouble){
+                damageDone *= critMultiplier; 
+                System.out.println("Critical Hit!");
+            }
+            target.setHealth(target.getHealth() - damageDone);
+            System.out.println("Your attack did " + damageDone + "Damage!");
+            if(target.getHealth() < 0){
+                System.out.println("The target was defeated.");
+            }
             return true;
         }
         else {
             System.out.println("The attack missed!"); 
             return false;
         }
-
     }
 
-
-    // method decomp to check if an attack hits or not
-    private boolean checkIfHit(double chanceToHit){
-        Random rand = new Random();
-        double randomDouble = rand.nextDouble();
-        if(chanceToHit >= randomDouble){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public double getPriority(){
+        return priority;
     }
 
-    @Override
-    public boolean attack(Character target) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attack'");
-    }
-
-    @Override
-    public int compareTo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
-    }
-
-    @Override
-    public boolean equals() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equals'");
-    }
 }
