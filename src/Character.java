@@ -1,4 +1,4 @@
-public interface Character {
+public interface Character{
     
     public boolean attack(Character target);
 
@@ -6,10 +6,8 @@ public interface Character {
 
     public void setHealth(double num);
 
+    public double getPriority();
+
     // we must override the compareTo and equals methods for these objects so we can give certain characters certain priorities
-    public int compareTo();
-
-    public boolean equals();
-
-
+    
 }
