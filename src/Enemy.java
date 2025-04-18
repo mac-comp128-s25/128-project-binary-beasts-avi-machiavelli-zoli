@@ -5,11 +5,11 @@ public class Enemy implements Character{
     private double health;
     private double critMultiplier;
     private double critChance;
-    private int priority;
+    private double priority;
     private double hitChance;
     private double attackDamage;
 
-    public Enemy(double health, double critMultiplier, double critChance, int priority, double hitChance, double attackDamage){
+    public Enemy(double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
         this.health = health;
         this.critMultiplier = critMultiplier;
         this.critChance = critChance;
@@ -51,6 +51,8 @@ public class Enemy implements Character{
         }
     }
 
-
+    public double getPriority(){
+        return priority;
+    }
 
 }
