@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +13,8 @@ public class MainPlayer implements Character {
     private double hitChance;
     private double attackDamage;
     private Random rand;
+    List<Spell> spellList;
+    List<Attack> attackList;
 
     public MainPlayer(int health, int mana, String name, double critMultiplier, double critChance, int priority, double hitChance, double attackDamage){
         this.health = health;
@@ -23,6 +26,8 @@ public class MainPlayer implements Character {
         this.hitChance = hitChance;
         this.attackDamage = attackDamage;
         this.rand = new Random();
+        this.spellList = new ArrayList<>();
+        this.attackList = new ArrayList<>();
     }
 
     public boolean attack(Character target){
@@ -72,6 +77,10 @@ public class MainPlayer implements Character {
                 System.out.println("The target was defeated.");
             }
         }
+    }
+
+    public void addSpell(Spell spell){
+        spellList.add(spell);
     }
 
     @Override
