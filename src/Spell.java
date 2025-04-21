@@ -9,5 +9,17 @@ public class Spell {
         this.targetAll = target;
     }
 
+    public int getManaCost(){
+        return manaCost;
+    }
+
+    public boolean getTargeting(){
+        return targetAll;
+    }
+
+    public double getDamage(){
+        return damage;
+    }
+
 
 }

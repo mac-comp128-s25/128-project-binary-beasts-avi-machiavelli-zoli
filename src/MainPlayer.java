@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class MainPlayer implements Character {
@@ -25,7 +26,6 @@ public class MainPlayer implements Character {
     }
 
     public boolean attack(Character target){
-        Random rand = new Random();
         double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
         if(hitChance > hitDouble){ // if the attack lands
             double critDouble = rand.nextDouble(); // new random double in order to check whether crit or not
@@ -35,7 +35,7 @@ public class MainPlayer implements Character {
                 System.out.println("Critical Hit!");
             }
             target.setHealth(target.getHealth() - damageDone);
-            System.out.println("Your attack did " + damageDone + "Damage!");
+            System.out.println("Your attack did " + damageDone + " damage!");
             if(target.getHealth() < 0){
                 System.out.println("The target was defeated.");
             }
@@ -47,7 +47,32 @@ public class MainPlayer implements Character {
         }
     }
 
+    public void useSpell(Spell spell, Enemy enemy){
+        if(mana < spell.getManaCost()){
+            System.out.println("Not enough mana. Choose a different attack.");
+            return;
+        }
+        enemy.setHealth(enemy.getHealth()-spell.getDamage());
+        System.out.println("Your attack did " + spell.getDamage() + " damage!");
+            if(enemy.getHealth() < 0){
+                System.out.println("The target was defeated.");
+            }
+    }
 
+    public void useSpell(Spell spell, List<Enemy> enemies){
+        if(mana < spell.getManaCost()){
+            System.out.println("Not enough mana. Choose a different attack.");
+            return;
+        }
+        mana -= spell.getManaCost();
+        for(Enemy enemy : enemies){
+            enemy.setHealth(enemy.getHealth()-spell.getDamage());
+            System.out.println("Your attack did " + spell.getDamage() + " damage!");
+            if(enemy.getHealth() < 0){
+                System.out.println("The target was defeated.");
+            }
+        }
+    }
 
     @Override
     public double getHealth() {
@@ -56,7 +81,7 @@ public class MainPlayer implements Character {
 
     @Override
     public void setHealth(double input) {
-        health=input;
+        health = input;
     }
 
     @Override
@@ -69,6 +94,4 @@ public class MainPlayer implements Character {
         return priority;
     }
 
-    
-    
 }
