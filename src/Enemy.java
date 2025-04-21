@@ -8,8 +8,10 @@ public class Enemy implements Character{
     private double priority;
     private double hitChance;
     private double attackDamage;
+    private String name;
 
-    public Enemy(double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
+    public Enemy(String name, double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
+        this.name = name;
         this.health = health;
         this.critMultiplier = critMultiplier;
         this.critChance = critChance;
