@@ -1,5 +1,5 @@
+import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
@@ -37,10 +37,23 @@ public class Main {
             }
         }
         if(numResponse==1){
-            
+            int order = 1;
+           List<Attack> attackList = player.getAttacks(); 
+           for(Attack attack:attackList){
+            System.out.println(order+" "+attack);
+            order++;
+           }
+           
         }
         else if(numResponse==2){
-            
+            int order = 1;
+            List<Spell> spellList = player.getSpells();
+            for(Spell spell:spellList){
+                System.out.println(order+" "+spell);
+                order++;
+            }
+
+
         }
     }
 
