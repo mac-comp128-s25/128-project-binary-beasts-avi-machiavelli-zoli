@@ -8,6 +8,7 @@ public interface Character{
 
     public double getPriority();
 
+    public String getName();
     
     
 }

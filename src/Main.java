@@ -50,7 +50,7 @@ public class Main {
 
     public PriorityQueue<Character> generateEncounter(){
         PriorityQueue<Character> queue = new PriorityQueue<>(priorityComparator);
-        Enemy enemy = new Enemy(0, 0, 0, 1, 0, 0);
+        Enemy enemy = new Enemy("test",0, 0, 0, 1, 0, 0);
         queue.add(enemy);
         queue.add(player);
         return queue;

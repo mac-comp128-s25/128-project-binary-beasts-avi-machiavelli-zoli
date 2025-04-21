@@ -8,8 +8,10 @@ public class Enemy implements Character{
     private double priority;
     private double hitChance;
     private double attackDamage;
+    private String name;
 
-    public Enemy(double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
+    public Enemy(String name, double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
+        this.name = name;
         this.health = health;
         this.critMultiplier = critMultiplier;
         this.critChance = critChance;
@@ -26,6 +28,9 @@ public class Enemy implements Character{
         health = newHealth;
     }
 
+    public String getName(){
+        return name;
+    }
 
     
     public boolean attack(Character target){
@@ -41,7 +46,7 @@ public class Enemy implements Character{
             target.setHealth(target.getHealth() - damageDone);
             System.out.println("Your attack did " + damageDone + "Damage!");
             if(target.getHealth() < 0){
-                System.out.println("The target was defeated.");
+                System.out.println(target.getName() + " was defeated.");
             }
             return true;
         }
