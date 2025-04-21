@@ -8,6 +8,7 @@ public interface Character{
 
     public double getPriority();
 
-    // we must override the compareTo and equals methods for these objects so we can give certain characters certain priorities
+    public String getName();
+    
     
 }

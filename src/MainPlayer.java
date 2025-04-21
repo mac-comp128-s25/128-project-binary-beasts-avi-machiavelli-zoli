@@ -115,4 +115,7 @@ public class MainPlayer implements Character {
         return priority;
     }
 
+    public String getName(){
+        return name;
+    }
 }
