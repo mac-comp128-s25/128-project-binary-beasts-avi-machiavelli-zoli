@@ -79,8 +79,20 @@ public class MainPlayer implements Character {
         }
     }
 
+    public List<Spell> getSpells(){
+        return spellList;
+    }
+
     public void addSpell(Spell spell){
         spellList.add(spell);
+    }
+
+    public List<Attack> getAttacks(){
+        return attackList;
+    }
+
+    public void addAttack(Attack attack){
+        attackList.add(attack);
     }
 
     @Override
