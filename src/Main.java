@@ -15,7 +15,14 @@ public class Main {
         player = new MainPlayer(100, 100, name, 1.5, 10, 2, .5, 10);
         while(player.getHealth()>0){
             PriorityQueue<Character> encounter = generateEncounter();
-            
+            Character currActor = encounter.poll();
+            if(currActor.getClass()==player.getClass()){
+                playerTurn(response);
+            }   
+            else{
+                enemyTurn(currActor);
+            }     
+            encounter.offer(currActor);
         }
         System.out.println("You died! Game over!");
     }
@@ -37,8 +44,8 @@ public class Main {
         }
     }
 
-    public void enemyTurn(Enemy enemy){
-
+    public void enemyTurn(Character enemy){
+        enemy.attack(player);
     }
 
     public PriorityQueue<Character> generateEncounter(){
