@@ -4,15 +4,20 @@ import java.util.Scanner;
 
 public class Main {
 
-    public MainPlayer player;
+    public Character player;
     public PriorityComparator priorityComparator;
+
+    public Main(){
+        player = new MainPlayer(100, 100, null, 1.5, 10, 2, .5, 10);
+    }
 
     public void mainGame(){
         Scanner response = new Scanner(System.in);
         System.out.println("Enter your name");
         String name = response.nextLine();
+        ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
-        player = new MainPlayer(100, 100, name, 1.5, 10, 2, .5, 10);
+        
         while(player.getHealth()>0){
             PriorityQueue<Character> encounter = generateEncounter();
             Character currActor = encounter.poll();
@@ -38,7 +43,7 @@ public class Main {
         }
         if(numResponse==1){
             int order = 1;
-           List<Attack> attackList = player.getAttacks(); 
+           List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
            for(Attack attack:attackList){
             System.out.println(order+" "+attack);
             order++;
@@ -47,13 +52,11 @@ public class Main {
         }
         else if(numResponse==2){
             int order = 1;
-            List<Spell> spellList = player.getSpells();
+            List<Spell> spellList = ((MainPlayer) player).getSpells();
             for(Spell spell:spellList){
                 System.out.println(order+" "+spell);
                 order++;
             }
-
-
         }
     }
 
@@ -63,13 +66,14 @@ public class Main {
 
     public PriorityQueue<Character> generateEncounter(){
         PriorityQueue<Character> queue = new PriorityQueue<>(priorityComparator);
-        Enemy enemy = new Enemy("test",0, 0, 0, 1, 0, 0);
+        Character enemy = new Enemy("test",0, 0, 0, 1, 0, 0);
         queue.add(enemy);
         queue.add(player);
         return queue;
     }
 
     public static void main(String[] args) {
-        
+        Main main = new Main();
+        main.mainGame();
     }
 }

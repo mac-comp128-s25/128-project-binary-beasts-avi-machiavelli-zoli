@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.random.*;
 
-public class Enemy implements Character{
+public class Enemy extends Character{
     private double health;
     private double critMultiplier;
     private double critChance;
@@ -60,4 +60,8 @@ public class Enemy implements Character{
         return priority;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        return 0; //TODO
+    }
 }

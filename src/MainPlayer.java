@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainPlayer implements Character {
+public class MainPlayer extends Character {
 
     private double health;
     private double mana;
@@ -118,4 +118,14 @@ public class MainPlayer implements Character {
     public String getName(){
         return name;
     }
+
+    public void setName(String input){
+        name = input;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0; //TODO
+    }
+
 }

@@ -1,14 +1,18 @@
-public interface Character{
+public abstract class Character implements Comparable{
     
-    public boolean attack(Character target);
+    public abstract boolean attack(Character target);
 
-    public double getHealth();
+    public abstract double getHealth();
 
-    public void setHealth(double num);
+    public abstract void setHealth(double num);
 
-    public double getPriority();
+    public abstract double getPriority();
 
-    public String getName();
+    public abstract String getName();
+
+    public int compareTo(){
+        return 0;
+    }
     
     
 }
