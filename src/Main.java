@@ -1,6 +1,10 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+
+import edu.macalester.graphics.Point;
 
 public class Main {
 
@@ -8,7 +12,7 @@ public class Main {
     public PriorityComparator priorityComparator;
 
     public Main(){
-        player = new MainPlayer(100, 3, 100, 1.5, 10, 1.5, 10, null);
+        player = new MainPlayer(100, 1, 100, 1.5, 10, 1.5, 10, null);
     }
 
     public void mainGame(){
@@ -17,22 +21,20 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
-        PriorityQueue<Character> encounter = generateEncounter();
-        for(Character character : encounter){
-            System.out.println(character.getClass());
-        }
+        Deque<Character> encounter = generateEncounter();
         
-        // while(player.getHealth()>0){
-        //     PriorityQueue<Character> encounter = generateEncounter();
-        //     Character currActor = encounter.poll();
-        //     if(currActor.getClass()==player.getClass()){
-        //         playerTurn(response);
-        //     }   
-        //     else{
-        //         enemyTurn(currActor);
-        //     }     
-        //     encounter.offer(currActor);
-        // }
+        while(player.getHealth()>0){
+            Character currActor = encounter.poll();
+            //System.out.println(currActor.getClass());
+            if(currActor.getClass().equals(player.getClass())){
+                playerTurn(response);
+            }   
+            else{
+                enemyTurn(currActor);
+                System.out.println("enemy");
+            }     
+            encounter.offer(currActor);
+        }
         System.out.println("You died! Game over!");
     }
 
@@ -68,9 +70,11 @@ public class Main {
         enemy.attack(player);
     }
 
-    public PriorityQueue<Character> generateEncounter(){
-        PriorityQueue<Character> queue = new PriorityQueue<>(priorityComparator);
-        Character enemy = new Enemy("test",0, 0, 0, 1, 0, 0);
+    public Deque<Character> generateEncounter(){
+        Deque<Character> queue = new ArrayDeque<Character>();; // 
+        //we are NOT using a priority queue, just make a list of all the characters and then sort it (either Comparable or Comparator),
+        //then add the list to a normal queue
+        Character enemy = new Enemy("test",0, 0, 0, 9, 0, 0);
         queue.add(enemy);
         queue.add(player);
         return queue;

@@ -1,4 +1,4 @@
-public abstract class Character implements Comparable{
+public abstract class Character implements Comparable<Character>{
     
     public abstract boolean attack(Character target);
 
@@ -10,7 +10,7 @@ public abstract class Character implements Comparable{
 
     public abstract String getName();
 
-    public abstract int compareTo(Object o);
+    public abstract int compareTo(Character character);
     
     
 }
