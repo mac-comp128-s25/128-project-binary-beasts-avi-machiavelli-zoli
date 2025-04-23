@@ -8,7 +8,7 @@ public class Main {
     public PriorityComparator priorityComparator;
 
     public Main(){
-        player = new MainPlayer(100, 100, null, 1.5, 10, 2, .5, 10);
+        player = new MainPlayer(100, 3, 100, 1.5, 10, 1.5, 10, null);
     }
 
     public void mainGame(){
@@ -17,18 +17,22 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
-        
-        while(player.getHealth()>0){
-            PriorityQueue<Character> encounter = generateEncounter();
-            Character currActor = encounter.poll();
-            if(currActor.getClass()==player.getClass()){
-                playerTurn(response);
-            }   
-            else{
-                enemyTurn(currActor);
-            }     
-            encounter.offer(currActor);
+        PriorityQueue<Character> encounter = generateEncounter();
+        for(Character character : encounter){
+            System.out.println(character.getClass());
         }
+        
+        // while(player.getHealth()>0){
+        //     PriorityQueue<Character> encounter = generateEncounter();
+        //     Character currActor = encounter.poll();
+        //     if(currActor.getClass()==player.getClass()){
+        //         playerTurn(response);
+        //     }   
+        //     else{
+        //         enemyTurn(currActor);
+        //     }     
+        //     encounter.offer(currActor);
+        // }
         System.out.println("You died! Game over!");
     }
 

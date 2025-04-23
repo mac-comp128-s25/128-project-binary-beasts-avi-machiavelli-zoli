@@ -10,9 +10,7 @@ public abstract class Character implements Comparable{
 
     public abstract String getName();
 
-    public int compareTo(){
-        return 0;
-    }
+    public abstract int compareTo(Object o);
     
     
 }

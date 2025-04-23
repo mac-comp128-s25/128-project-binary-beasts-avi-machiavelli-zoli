@@ -16,7 +16,7 @@ public class MainPlayer extends Character {
     List<Spell> spellList;
     List<Attack> attackList;
 
-    public MainPlayer(int health, int mana, String name, double critMultiplier, double critChance, int priority, double hitChance, double attackDamage){
+    public MainPlayer(int health, int priority, int mana, double critMultiplier, double critChance, double hitChance, double attackDamage, String name){
         this.health = health;
         this.mana = mana;
         this.name=  name;
@@ -125,7 +125,7 @@ public class MainPlayer extends Character {
 
     @Override
     public int compareTo(Object o) {
-        return 0; //TODO
+        return Double.compare(this.getPriority(), ((Character) o).getPriority());
     }
 
 }

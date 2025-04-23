@@ -60,8 +60,13 @@ public class Enemy extends Character{
         return priority;
     }
 
+    // @Override
+    // public int compareTo(Character character) {
+    //     return Double.compare(this.getPriority(), character.getPriority());
+    // }
+
     @Override
     public int compareTo(Object o) {
-        return 0; //TODO
+        return Double.compare(this.getPriority(), ((Character) o).getPriority());
     }
 }
