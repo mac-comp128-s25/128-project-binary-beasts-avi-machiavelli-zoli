@@ -69,4 +69,10 @@ public class Enemy extends Character{
     public int compareTo(Character target) {
         return Double.compare(this.getPriority(), target.getPriority());
     }
+
+    @Override
+    public boolean useAttack(Character target, Attack attack) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'useAttack'");
+    }
 }

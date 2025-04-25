@@ -13,7 +13,7 @@ public class CharacterTests {
     public void testAttackHits(){
         player = new MainPlayer(100, 100, 0, 0, 0, 1.00, 40, "nevermiss");
         enemy = new Enemy("nevermiss", 100.0, 0.0,  0.0, 0.0, 1.0, 30);
-        player.attack(enemy);
+        //player.attack(enemy);
         enemy.attack(player);
         assertEquals(enemy.getHealth(), 60);
         assertEquals(player.getHealth(), 70);
@@ -23,7 +23,7 @@ public class CharacterTests {
     public void testAttackMiss(){
         player = new MainPlayer(100, 100, 0, 0, 0, 0.00, 40, "alwaysmiss");
         enemy = new Enemy("alwaysmiss", 100.0, 0.0,  0.0, 0.0, 0.0, 30);
-        player.attack(enemy);
+        //player.attack(enemy);
         enemy.attack(player);
         assertEquals(enemy.getHealth(), 100);
         assertEquals(player.getHealth(), 100);
@@ -33,7 +33,7 @@ public class CharacterTests {
     public void testCritAttack(){
         player = new MainPlayer(100, 100, 0, 1.5, 1, 1, 40, "alwayscrit");
         enemy = new Enemy("alwayscrit", 100.0, 1.5,  1.0, 0.0, 1.0, 30);
-        player.attack(enemy);
+        //player.attack(enemy);
         enemy.attack(player);
         assertEquals(enemy.getHealth(), 40);
         assertEquals(player.getHealth(), 55);
