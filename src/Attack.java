@@ -1,8 +1,11 @@
 public class Attack {
+    private String name;
     private double damage;
     private double chanceToHit;
+    
 
-    public Attack(double damage, double chanceToHit){
+    public Attack(String name, double damage, double chanceToHit){
+        this.name = name;
         this.damage = damage;
         this.chanceToHit = chanceToHit;
     }
@@ -13,5 +16,9 @@ public class Attack {
 
     public double getChanceToHit(){
         return chanceToHit;
+    }
+
+    public String getName(){
+        return name;
     }
 }
