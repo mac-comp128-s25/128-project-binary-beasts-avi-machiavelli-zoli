@@ -43,13 +43,13 @@ public class MainPlayer extends Character {
             System.out.println("Your attack did " + damageDone + " damage!");
             if(target.getHealth() < 0){
                 System.out.println("The target was defeated.");
+                return true;
             }
-            return true;
         }
         else {
             System.out.println("The attack missed!"); 
-            return false;
         }
+        return false;
     }
 
     public void useSpell(Spell spell, Enemy enemy){
