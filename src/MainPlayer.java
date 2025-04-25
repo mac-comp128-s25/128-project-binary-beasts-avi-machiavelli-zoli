@@ -30,11 +30,11 @@ public class MainPlayer extends Character {
         this.attackList = new ArrayList<>();
     }
 
-    public boolean attack(Character target){
+    public boolean useAttack(Character target, Attack attack){
         double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
-        if(hitChance > hitDouble){ // if the attack lands
+        if(attack.getChanceToHit() > hitDouble){ // if the attack lands
             double critDouble = rand.nextDouble(); // new random double in order to check whether crit or not
-            double damageDone = attackDamage; // variable that tracks the total damage we will do. will be increased if crit, will stay same if not
+            double damageDone = attack.getDamage(); // variable that tracks the total damage we will do. will be increased if crit, will stay same if not
             if(critChance > critDouble){
                 damageDone *= critMultiplier; 
                 System.out.println("Critical Hit!");
