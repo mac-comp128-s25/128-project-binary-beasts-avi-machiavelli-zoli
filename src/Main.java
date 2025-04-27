@@ -70,19 +70,20 @@ public class Main {
                 }
             }
             if(attackResponse==1){
-                System.out.println("Choose which enemy you would like to attack:");
-                int enemyNum = 1;
-                for(Enemy enemy: enemyList){
-                    System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
-                    enemyNum++;
-                }
-                int enemyResponse = enemyList.size()+1;
-                while(enemyResponse>enemyList.size() || enemyResponse<0){
-                    enemyResponse = input.nextInt();
-                    if(enemyResponse>enemyList.size() || numResponse<0){
-                        System.out.println("Please enter a valid number");
-                    }
-                }
+                // System.out.println("Choose which enemy you would like to attack:");
+                // int enemyNum = 1;
+                // for(Enemy enemy: enemyList){
+                //     System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
+                //     enemyNum++;
+                // }
+                // int enemyResponse = enemyList.size()+1;
+                // while(enemyResponse>enemyList.size() || enemyResponse<0){
+                //     enemyResponse = input.nextInt();
+                //     if(enemyResponse>enemyList.size() || numResponse<0){
+                //         System.out.println("Please enter a valid number");
+                //     }
+                // }
+                int enemyResponse = chooseEnemy(input);
                 player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
             else{
@@ -102,6 +103,23 @@ public class Main {
     public void enemyTurn(Character enemy){
         System.out.println("Enemy " + enemy.getName() + " attacks!");
         ((Enemy)enemy).attack(player);
+    }
+
+    public int chooseEnemy(Scanner input){
+        System.out.println("Choose which enemy you would like to attack:");
+        int enemyNum = 1;
+        for(Enemy enemy: enemyList){
+            System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
+            enemyNum++;
+        }
+        int enemyResponse = enemyList.size()+1;
+        while(enemyResponse>enemyList.size() || enemyResponse<0){
+            enemyResponse = input.nextInt();
+            if(enemyResponse>enemyList.size() || enemyResponse<0){
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return enemyResponse;
     }
 
     public Deque<Character> generateEncounter(){
