@@ -31,7 +31,6 @@ public class Main {
         
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
-            //System.out.println(currActor.getClass());
             if(currActor.getClass().equals(player.getClass())){
                 playerTurn(response);
             }   
@@ -74,7 +73,8 @@ public class Main {
                 player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
             else{
-                player.useAttack(enemyList.get(0), attackList.get(attackResponse-1));
+                int enemyResponse = chooseEnemy(input);
+                player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
         }
         else if(numResponse==2){
@@ -135,7 +135,7 @@ public class Main {
     public int playerResponse(int numAnswers, String preamble){
         Scanner response = new Scanner(System.in);
         int output = 0;
-        while(output>numAnswers || output<0){
+        while(output>numAnswers || output<1){
             System.out.println(preamble);
             output = response.nextInt();
             if(output>numAnswers || output<0){
