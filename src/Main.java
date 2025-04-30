@@ -46,29 +46,15 @@ public class Main {
         for(Enemy enemy: enemyList){
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
-        int numResponse = 3;
-        while(numResponse>2 || numResponse<0){
-            System.out.println("Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-            numResponse = input.nextInt();
-            if(numResponse>2 || numResponse<0){
-                System.out.println("Please enter a valid number");
-            }
-        }
+        int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         if(numResponse==1){
             int order = 1;
             List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
-            System.out.println("Choose your attack!");
             for(Attack attack:attackList){
             System.out.println(order+" "+attack.getName());
             order++;
             }
-            int attackResponse = 3; //one greater than the number of available attacks, get list length
-            while(attackResponse>2 || attackResponse<0){
-                attackResponse = input.nextInt();
-                if(numResponse>2 || numResponse<0){
-                    System.out.println("Please enter a valid number");
-                }
-            }
+            int attackResponse = playerResponse(2, "Choose your attack!");
             if(attackResponse==1){
                 // System.out.println("Choose which enemy you would like to attack:");
                 // int enemyNum = 1;
@@ -96,6 +82,14 @@ public class Main {
             for(Spell spell:spellList){
                 System.out.println(order+" "+spell);
                 order++;
+            }
+            int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
+            if(spellList.get(-1).getTargeting() == true){
+
+            }
+            else{
+                int target = chooseEnemy(input);
+                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
             }
         }
     }
@@ -131,6 +125,19 @@ public class Main {
         queue.add(enemy);
         queue.add(player);
         return queue;
+    }
+
+    public int playerResponse(int numAnswers, String preamble){
+        Scanner response = new Scanner(System.in);
+        int output = 0;
+        while(output>numAnswers || output<0){
+            System.out.println(preamble);
+            output = response.nextInt();
+            if(output>numAnswers || output<0){
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return output;
     }
 
     public static void main(String[] args) {
