@@ -3,18 +3,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Main {
 
     private Character player;
-    private PriorityComparator priorityComparator;
+    private PriorityComparator priorityComparator = new PriorityComparator();
     private List<Enemy> enemyList;
+    private TreeMap<String, List<Skill>> skillTree;
+    private List<Attack> possibleAttacks;
+    private List<Spell> possibleSpells;
 
     public Main(){
         player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
+        possibleAttacks = new ArrayList<>();
+        possibleSpells = new ArrayList<>();
     }
 
     public void mainGame(){
@@ -57,19 +62,6 @@ public class Main {
             }
             int attackResponse = playerResponse(2, "Choose your attack!");
             if(attackResponse==1){
-                // System.out.println("Choose which enemy you would like to attack:");
-                // int enemyNum = 1;
-                // for(Enemy enemy: enemyList){
-                //     System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
-                //     enemyNum++;
-                // }
-                // int enemyResponse = enemyList.size()+1;
-                // while(enemyResponse>enemyList.size() || enemyResponse<0){
-                //     enemyResponse = input.nextInt();
-                //     if(enemyResponse>enemyList.size() || numResponse<0){
-                //         System.out.println("Please enter a valid number");
-                //     }
-                // }
                 int enemyResponse = chooseEnemy(input);
                 player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
@@ -127,7 +119,7 @@ public class Main {
         enemyList.add((Enemy)enemy);
         encounterList.add(enemy);
 
-        Collections.sort(encounterList, new PriorityComparator());
+        Collections.sort(encounterList, priorityComparator);
         queue.addAll(encounterList);
 
         return queue;
@@ -150,6 +142,16 @@ public class Main {
             }
         }
         return output;
+    }
+
+    public void graphSetup(){
+        //treemap--it has significantly less depth, but it will be an easy middle implementation that we can make more complicated later
+        //String, List<Node> of the Upgrade Type (attack, spell, upgrade) and the list of available upgrades
+        skillTree = new TreeMap<>();
+        //SkillNode attackNode = new SkillNode(possibleAttacks);
+        //SkillNode spellNode = new SkillNode(possibleSpells);
+        //skillTree.put("Attacks", possibleAttacks);
+        //skillTree.put("Spells", possibleSpells); WHY
     }
 
     public static void main(String[] args) {

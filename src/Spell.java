@@ -1,4 +1,4 @@
-public class Spell {
+public class Spell implements Skill{
     private String name;
     private int manaCost;
     private boolean targetAll; 
