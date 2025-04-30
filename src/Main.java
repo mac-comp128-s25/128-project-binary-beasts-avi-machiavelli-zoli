@@ -25,6 +25,7 @@ public class Main {
         System.out.println("This is the story of " + name);
         ((MainPlayer) player).addAttack(new Attack("Regular", 4, 1.00));
         ((MainPlayer) player).addAttack(new Attack("Regular2", 1, 0.5));
+        ((MainPlayer) player).addSpell(null);
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         Deque<Character> encounter = generateEncounter();
@@ -137,7 +138,13 @@ public class Main {
         int output = 0;
         while(output>numAnswers || output<1){
             System.out.println(preamble);
-            output = response.nextInt();
+            try{
+                output = response.nextInt();
+            }
+            catch(java.util.InputMismatchException e){
+                System.out.println("That's not a number!");
+            }
+            
             if(output>numAnswers || output<0){
                 System.out.println("Please enter a valid number");
             }
