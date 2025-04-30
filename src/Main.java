@@ -10,6 +10,7 @@ public class Main {
     private Character player;
     private PriorityComparator priorityComparator;
     private List<Enemy> enemyList;
+    private Deque<Character> encounter;
 
     public Main(){
         player = new MainPlayer(100, 1, 100, 1.5, 10, 1.5, 10, null);
@@ -26,7 +27,7 @@ public class Main {
         ((MainPlayer) player).addAttack(new Attack("Regular2", 1, 0.5));
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-        Deque<Character> encounter = generateEncounter();
+        encounter = generateEncounter();
         
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
@@ -69,25 +70,10 @@ public class Main {
                     System.out.println("Please enter a valid number");
                 }
             }
-            if(attackResponse==1){
-                // System.out.println("Choose which enemy you would like to attack:");
-                // int enemyNum = 1;
-                // for(Enemy enemy: enemyList){
-                //     System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
-                //     enemyNum++;
-                // }
-                // int enemyResponse = enemyList.size()+1;
-                // while(enemyResponse>enemyList.size() || enemyResponse<0){
-                //     enemyResponse = input.nextInt();
-                //     if(enemyResponse>enemyList.size() || numResponse<0){
-                //         System.out.println("Please enter a valid number");
-                //     }
-                // }
-                int enemyResponse = chooseEnemy(input);
-                player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
-            }
-            else{
-                player.useAttack(enemyList.get(0), attackList.get(attackResponse-1));
+            int enemyResponse = chooseEnemy(input);
+            Enemy chosenEnemy = enemyList.get(enemyResponse-1);
+            if(player.useAttack(chosenEnemy, attackList.get(attackResponse-1))){
+                chosenEnemy.setDead(true);               
             }
         }
         else if(numResponse==2){
@@ -101,8 +87,20 @@ public class Main {
     }
 
     public void enemyTurn(Character enemy){
-        System.out.println("Enemy " + enemy.getName() + " attacks!");
-        ((Enemy)enemy).attack(player);
+        if(((Enemy) enemy).getDead()){
+            encounter.poll();
+            List<Enemy> newEnemyList = new ArrayList<Enemy>();
+            for(Enemy oldEnemy: enemyList){
+                if(!(oldEnemy == enemy)){
+                    newEnemyList.add(oldEnemy);
+                }
+            }
+            enemyList = newEnemyList;
+        }
+        else{
+            System.out.println("Enemy " + enemy.getName() + " attacks!");
+            ((Enemy)enemy).attack(player);
+        }
     }
 
     public int chooseEnemy(Scanner input){
@@ -126,9 +124,12 @@ public class Main {
         Deque<Character> queue = new ArrayDeque<Character>();; // 
         //we are NOT using a priority queue, just make a list of all the characters and then sort it (either Comparable or Comparator),
         //then add the list to a normal queue
-        Character enemy = new Enemy("test",10, 0, 0, 9, 0, 0);
-        enemyList.add((Enemy)enemy);
-        queue.add(enemy);
+        Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
+        Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
+        enemyList.add((Enemy)enemy1);
+        enemyList.add((Enemy)enemy2);
+        queue.add(enemy1);
+        queue.add(enemy2);
         queue.add(player);
         return queue;
     }
