@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -12,7 +13,7 @@ public class Main {
     private List<Enemy> enemyList;
 
     public Main(){
-        player = new MainPlayer(100, 1, 100, 1.5, 10, 1.5, 10, null);
+        player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
     }
 
@@ -117,13 +118,17 @@ public class Main {
     }
 
     public Deque<Character> generateEncounter(){
-        Deque<Character> queue = new ArrayDeque<Character>();; // 
-        //we are NOT using a priority queue, just make a list of all the characters and then sort it (either Comparable or Comparator),
-        //then add the list to a normal queue
+        Deque<Character> queue = new ArrayDeque<Character>();; 
+        List<Character> encounterList = new ArrayList<>();
+        encounterList.add(player);
+
         Character enemy = new Enemy("test",10, 0, 0, 9, 0, 0);
         enemyList.add((Enemy)enemy);
-        queue.add(enemy);
-        queue.add(player);
+        encounterList.add(enemy);
+
+        Collections.sort(encounterList, new PriorityComparator());
+        queue.addAll(encounterList);
+
         return queue;
     }
 
