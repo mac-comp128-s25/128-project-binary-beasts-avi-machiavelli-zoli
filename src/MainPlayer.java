@@ -138,4 +138,12 @@ public class MainPlayer extends Character {
         return Double.compare(this.getPriority(), target.getPriority());
     }
 
+    public double getMana(){
+        return mana;
+    }
+
+    public void setMana(double input){
+        mana = input;
+    }
+
 }
