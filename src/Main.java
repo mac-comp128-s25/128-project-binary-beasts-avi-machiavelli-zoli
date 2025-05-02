@@ -44,11 +44,13 @@ public class Main {
             Character currActor = encounter.poll();
             if(currActor.getClass().equals(player.getClass())){
                 playerTurn(response);
+                encounter.offer(currActor);
             }   
             else{
-                enemyTurn(currActor);
+                if(enemyTurn(currActor)){
+                    encounter.offer(currActor);
+                }
             }     
-            encounter.offer(currActor);
         }
         System.out.println("You died! Game over!");
     }
@@ -67,7 +69,9 @@ public class Main {
             }
                 int attackResponse = playerResponse(2, "Choose your attack!");
                 int enemyResponse = chooseEnemy(input);
-                player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
+                if(player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1))){
+                    enemyList.get(enemyResponse-1).setDead(true);
+                }
             }
         else if(numResponse==2){
             int order = 1;
@@ -87,9 +91,8 @@ public class Main {
         }
     }
 
-    public void enemyTurn(Character enemy){
+    public boolean enemyTurn(Character enemy){
         if(((Enemy) enemy).getDead()){
-            encounter.poll();
             List<Enemy> newEnemyList = new ArrayList<Enemy>();
             for(Enemy oldEnemy: enemyList){
                 if(!(oldEnemy == enemy)){
@@ -97,10 +100,12 @@ public class Main {
                 }
             }
             enemyList = newEnemyList;
+            return false;
         }
         else{
             System.out.println("Enemy " + enemy.getName() + " attacks!");
             ((Enemy)enemy).attack(player);
+            return true;
         }
     }
 

@@ -47,6 +47,9 @@ public class MainPlayer extends Character {
                 System.out.println("The target was defeated.");
                 return true;
             }
+            else{
+                return false;
+            }
         }
         else {
             System.out.println("The attack missed!"); 
