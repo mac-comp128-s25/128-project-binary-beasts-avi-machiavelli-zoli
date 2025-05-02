@@ -5,7 +5,7 @@ import java.util.Random;
 public class MainPlayer extends Character {
 
     private double health;
-    private double mana;
+    private int mana;
     private String name;
     private double critMultiplier;
     private double critChance;
@@ -138,12 +138,12 @@ public class MainPlayer extends Character {
         return Double.compare(this.getPriority(), target.getPriority());
     }
 
-    public double getMana(){
+    public int getMana(){
         return mana;
     }
 
-    public void setMana(double input){
-        mana = input;
+    public void modifyMana(int input){
+        mana += input;
     }
 
 }
