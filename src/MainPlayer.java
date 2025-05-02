@@ -15,6 +15,7 @@ public class MainPlayer extends Character {
     private Random rand;
     List<Spell> spellList;
     List<Attack> attackList;
+    List<Skill> skillList;
 
     public MainPlayer(int health, int priority, int mana, double critMultiplier, double critChance, double hitChance, double attackDamage, String name){
         this.health = health;
@@ -28,6 +29,7 @@ public class MainPlayer extends Character {
         this.rand = new Random();
         this.spellList = new ArrayList<>();
         this.attackList = new ArrayList<>();
+        this.skillList = new ArrayList<>();
     }
 
     public boolean useAttack(Character target, Attack attack){
@@ -93,6 +95,14 @@ public class MainPlayer extends Character {
 
     public void addAttack(Attack attack){
         attackList.add(attack);
+    }
+
+    public List<Skill> getSkills(){
+        return skillList;
+    }
+
+    public void addSkill(Skill skill){
+        skillList.add(skill);
     }
 
     @Override

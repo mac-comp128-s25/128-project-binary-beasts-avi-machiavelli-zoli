@@ -12,14 +12,15 @@ public class Main {
     private PriorityComparator priorityComparator = new PriorityComparator();
     private List<Enemy> enemyList;
     private TreeMap<String, List<Skill>> skillTree;
-    private List<Attack> possibleAttacks;
-    private List<Spell> possibleSpells;
+    private List<Skill> possibleAttacks;
+    private List<Skill> possibleSpells;
 
     public Main(){
         player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
+        skillTree = new TreeMap<>();
     }
 
     public void mainGame(){
@@ -28,9 +29,10 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
+
         ((MainPlayer) player).addAttack(new Attack("Regular", 4, 1.00));
         ((MainPlayer) player).addAttack(new Attack("Regular2", 1, 0.5));
-        ((MainPlayer) player).addSpell(null);
+        ((MainPlayer) player).addSpell(new Spell("Acid Splash", 1, 3, true));
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         Deque<Character> encounter = generateEncounter();
@@ -147,11 +149,19 @@ public class Main {
     public void graphSetup(){
         //treemap--it has significantly less depth, but it will be an easy middle implementation that we can make more complicated later
         //String, List<Node> of the Upgrade Type (attack, spell, upgrade) and the list of available upgrades
-        skillTree = new TreeMap<>();
-        //SkillNode attackNode = new SkillNode(possibleAttacks);
-        //SkillNode spellNode = new SkillNode(possibleSpells);
-        //skillTree.put("Attacks", possibleAttacks);
-        //skillTree.put("Spells", possibleSpells); WHY
+
+        Skill regular = new Attack("Regular Attack", 4, 0.75);
+        possibleAttacks.add(regular); //possible attacks can be successfully added.
+        //TODO define all possible attacks and spells up here
+
+        skillTree.put("Attacks", possibleAttacks);
+        skillTree.put("Spells", possibleSpells); 
+        //upgrades
+    }
+
+    public void addSkill(){
+        //if the skill is already in the player's list of abilities, then don't allow them to take it
+        //otherwise, add the skill to the proper list (attack/spell), and add it to the greater list of all skills
     }
 
     public static void main(String[] args) {
