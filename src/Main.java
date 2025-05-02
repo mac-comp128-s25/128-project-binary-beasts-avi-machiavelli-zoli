@@ -79,7 +79,7 @@ public class Main {
             }
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
             if(spellList.get(-1).getTargeting() == true){
-
+                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
             }
             else{
                 int target = chooseEnemy(input);
@@ -135,6 +135,7 @@ public class Main {
             }
             catch(java.util.InputMismatchException e){
                 System.out.println("That's not a number!");
+                response.next();
             }
             
             if(output>numAnswers || output<0){
