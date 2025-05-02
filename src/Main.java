@@ -24,6 +24,7 @@ public class Main {
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
         skillTree = new TreeMap<>();
+        graphSetup();
     }
 
     public void mainGame(){
@@ -32,10 +33,6 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
-
-        ((MainPlayer) player).addAttack(new Attack("Regular", 4, 1.00));
-        ((MainPlayer) player).addAttack(new Attack("Regular2", 1, 0.5));
-        ((MainPlayer) player).addSpell(new Spell("Acid Splash", 1, 3, true));
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         encounter = generateEncounter();
@@ -77,11 +74,11 @@ public class Main {
             int order = 1;
             List<Spell> spellList = ((MainPlayer) player).getSpells();
             for(Spell spell:spellList){
-                System.out.println(order+" "+spell);
+                System.out.println(order+" "+spell.getName());
                 order++;
             }
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
-            if(spellList.get(-1).getTargeting() == true){
+            if(spellList.get(spellChoice-1).getTargeting() == true){
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
             }
             else{
@@ -168,8 +165,26 @@ public class Main {
         //treemap--it has significantly less depth, but it will be an easy middle implementation that we can make more complicated later
         //String, List<Node> of the Upgrade Type (attack, spell, upgrade) and the list of available upgrades
 
+        //Define and add all intial attacks to the attackList
         Skill regular = new Attack("Regular Attack", 4, 0.75);
-        possibleAttacks.add(regular); //possible attacks can be successfully added.
+        possibleAttacks.add(regular);
+        Skill trueCrit = new Attack("True Crit", 4, 1.00);
+        possibleAttacks.add(trueCrit);
+        Skill terribleSlash = new Attack("Terrible Slash", 1, 0.5);
+        possibleAttacks.add(terribleSlash);
+
+        //Define and add all intial spells to the spellList
+        Skill acidSplash = new Spell("Acid Splash", 1, 3, true);
+        possibleSpells.add(acidSplash);
+
+        possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
+        possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
+
+        //Define and add all other attacks to the attackList
+
+        //Define and add all other spells to the spellList
+        
+        
         //TODO define all possible attacks and spells up here
 
         skillTree.put("Attacks", possibleAttacks);
