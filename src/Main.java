@@ -19,12 +19,11 @@ public class Main {
 
     public Main(){
         player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
-        player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
         skillTree = new TreeMap<>();
-        graphSetup();
+        skillSetup();
     }
 
     public void mainGame(){
@@ -156,7 +155,7 @@ public class Main {
         return output;
     }
 
-    public void graphSetup(){
+    public void skillSetup(){
         //treemap--it has significantly less depth, but it will be an easy middle implementation that we can make more complicated later
         //String, List<Node> of the Upgrade Type (attack, spell, upgrade) and the list of available upgrades
 
@@ -169,16 +168,43 @@ public class Main {
         possibleAttacks.add(terribleSlash);
 
         //Define and add all intial spells to the spellList
-        Skill acidSplash = new Spell("Acid Splash", 1, 3, true);
-        possibleSpells.add(acidSplash);
+        Skill thunderclap = new Spell("Thunderclap", 1, 2, true);
+        possibleSpells.add(thunderclap);
 
         possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
         possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
 
         //Define and add all other attacks to the attackList
+        Skill fellingBlow = new Attack("Felling Blow", 8, 0.6);
+        possibleAttacks.add(fellingBlow);
+        Skill giantsBlade = new Attack("Giant's Blade", 6, 0.7);
+        possibleAttacks.add(giantsBlade);
+        Skill bladeOfMidnight = new Attack("Blade of Midnight", 4, 0.90);
+        possibleAttacks.add(bladeOfMidnight);
+        Skill strikeOfTheWind = new Attack("Strike of the Wind", 3, 0.95);
+        possibleAttacks.add(strikeOfTheWind);
+        
 
         //Define and add all other spells to the spellList
-        
+        Skill holyFlame = new Spell("Holy Flame", 1, 4, false);
+        possibleSpells.add(holyFlame);
+        Skill shatter = new Spell("Shatter", 2, 3, true);
+        possibleSpells.add(shatter);
+        Skill scorchingRay = new Spell("Scorching Ray", 2, 5, false);
+        possibleSpells.add(scorchingRay);
+        Skill phantasmalKiller = new Spell("Phantasmal Killer", 3, 4, true);
+        possibleSpells.add(phantasmalKiller);
+        Skill psychicStrike = new Spell("Psychic Strike", 3, 6, false);
+        possibleSpells.add(psychicStrike);
+        Skill heavenlySwarm = new Spell("Heavenly Swarm", 4, 5, true);
+        possibleSpells.add(heavenlySwarm);
+        Skill heavensCurse = new Spell("Heaven's Curse", 4, 7, false);
+        possibleSpells.add(heavensCurse);
+        Skill fireball = new Spell("Fireball", 5, 6, true);
+        possibleSpells.add(fireball);
+        Skill obliteration = new Spell("Obliteration", 5, 8, false);
+        possibleSpells.add(obliteration)
+
         
         //TODO define all possible attacks and spells up here
 
