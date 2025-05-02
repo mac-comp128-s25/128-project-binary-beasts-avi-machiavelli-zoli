@@ -80,10 +80,13 @@ public class Main {
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
             if(spellList.get(spellChoice-1).getTargeting() == true){
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
+                    
             }
             else{
                 int target = chooseEnemy(input);
-                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
+                if(((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1))){
+                    enemyList.get(target-1).setDead(true);
+                }
             }
         }
     }
