@@ -63,7 +63,7 @@ public class Main {
             System.out.println(order+" "+attack.getName());
             order++;
             }
-                int attackResponse = playerResponse(2, "Choose your attack!");
+                int attackResponse = playerResponse(((MainPlayer)player).attackList.size(), "Choose your attack!");
                 int enemyResponse = chooseEnemy(input);
                 if(player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1))){
                     enemyList.get(enemyResponse-1).setDead(true);
@@ -208,7 +208,7 @@ public class Main {
         Skill fireball = new Spell("Fireball", 5, 6, true);
         possibleSpells.add(fireball);
         Skill obliteration = new Spell("Obliteration", 5, 8, false);
-        possibleSpells.add(obliteration)
+        possibleSpells.add(obliteration);
 
         
         //TODO define all possible attacks and spells up here
