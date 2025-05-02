@@ -1,6 +1,7 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
@@ -12,14 +13,17 @@ public class Main {
     private PriorityComparator priorityComparator = new PriorityComparator();
     private List<Enemy> enemyList;
     private TreeMap<String, List<Skill>> skillTree;
-    private List<Attack> possibleAttacks;
-    private List<Spell> possibleSpells;
+    private List<Skill> possibleAttacks;
+    private List<Skill> possibleSpells;
+    private Deque<Character> encounter;
 
     public Main(){
+        player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
+        skillTree = new TreeMap<>();
     }
 
     public void mainGame(){
@@ -28,12 +32,13 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
+
         ((MainPlayer) player).addAttack(new Attack("Regular", 4, 1.00));
         ((MainPlayer) player).addAttack(new Attack("Regular2", 1, 0.5));
-        ((MainPlayer) player).addSpell(null);
+        ((MainPlayer) player).addSpell(new Spell("Acid Splash", 1, 3, true));
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-        Deque<Character> encounter = generateEncounter();
+        encounter = generateEncounter();
         
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
@@ -53,6 +58,7 @@ public class Main {
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
         int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
+        int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         if(numResponse==1){
             int order = 1;
             List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
@@ -60,16 +66,10 @@ public class Main {
             System.out.println(order+" "+attack.getName());
             order++;
             }
-            int attackResponse = playerResponse(2, "Choose your attack!");
-            if(attackResponse==1){
+                int attackResponse = playerResponse(2, "Choose your attack!");
                 int enemyResponse = chooseEnemy(input);
                 player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
-            else{
-                int enemyResponse = chooseEnemy(input);
-                player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
-            }
-        }
         else if(numResponse==2){
             int order = 1;
             List<Spell> spellList = ((MainPlayer) player).getSpells();
@@ -85,12 +85,32 @@ public class Main {
                 int target = chooseEnemy(input);
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
             }
+            int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
+            if(spellList.get(-1).getTargeting() == true){
+
+            }
+            else{
+                int target = chooseEnemy(input);
+                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
+            }
         }
     }
 
     public void enemyTurn(Character enemy){
-        System.out.println("Enemy " + enemy.getName() + " attacks!");
-        ((Enemy)enemy).attack(player);
+        if(((Enemy) enemy).getDead()){
+            encounter.poll();
+            List<Enemy> newEnemyList = new ArrayList<Enemy>();
+            for(Enemy oldEnemy: enemyList){
+                if(!(oldEnemy == enemy)){
+                    newEnemyList.add(oldEnemy);
+                }
+            }
+            enemyList = newEnemyList;
+        }
+        else{
+            System.out.println("Enemy " + enemy.getName() + " attacks!");
+            ((Enemy)enemy).attack(player);
+        }
     }
 
     public int chooseEnemy(Scanner input){
@@ -115,11 +135,14 @@ public class Main {
         List<Character> encounterList = new ArrayList<>();
         encounterList.add(player);
 
-        Character enemy = new Enemy("test",10, 0, 0, 9, 0, 0);
-        enemyList.add((Enemy)enemy);
-        encounterList.add(enemy);
+        Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
+        Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
+        enemyList.add((Enemy)enemy1);
+        enemyList.add((Enemy)enemy2);
+        queue.add(enemy1);
+        encounterList.add(enemy2);
 
-        Collections.sort(encounterList, priorityComparator);
+        Collections.sort(encounterList, new PriorityComparator());
         queue.addAll(encounterList);
 
         return queue;
@@ -148,11 +171,19 @@ public class Main {
     public void graphSetup(){
         //treemap--it has significantly less depth, but it will be an easy middle implementation that we can make more complicated later
         //String, List<Node> of the Upgrade Type (attack, spell, upgrade) and the list of available upgrades
-        skillTree = new TreeMap<>();
-        //SkillNode attackNode = new SkillNode(possibleAttacks);
-        //SkillNode spellNode = new SkillNode(possibleSpells);
-        //skillTree.put("Attacks", possibleAttacks);
-        //skillTree.put("Spells", possibleSpells); WHY
+
+        Skill regular = new Attack("Regular Attack", 4, 0.75);
+        possibleAttacks.add(regular); //possible attacks can be successfully added.
+        //TODO define all possible attacks and spells up here
+
+        skillTree.put("Attacks", possibleAttacks);
+        skillTree.put("Spells", possibleSpells); 
+        //upgrades
+    }
+
+    public void addSkill(){
+        //if the skill is already in the player's list of abilities, then don't allow them to take it
+        //otherwise, add the skill to the proper list (attack/spell), and add it to the greater list of all skills
     }
 
     public static void main(String[] args) {

@@ -9,6 +9,7 @@ public class Enemy extends Character{
     private double hitChance;
     private double attackDamage;
     private String name;
+    private boolean dead;
 
     public Enemy(String name, double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
         this.name = name;
@@ -18,6 +19,7 @@ public class Enemy extends Character{
         this.priority = priority;
         this.hitChance = hitChance;
         this.attackDamage = attackDamage;
+        this.dead = false;
     }
 
     public double getHealth(){
@@ -30,6 +32,14 @@ public class Enemy extends Character{
 
     public String getName(){
         return name;
+    }
+
+    public boolean getDead(){
+        return dead;
+    }
+
+    public void setDead(boolean status){
+        dead = status;
     }
 
     
