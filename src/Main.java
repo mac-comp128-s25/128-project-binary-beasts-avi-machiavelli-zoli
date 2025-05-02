@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -13,7 +14,7 @@ public class Main {
     private Deque<Character> encounter;
 
     public Main(){
-        player = new MainPlayer(100, 1, 100, 1.5, 10, 1.5, 10, null);
+        player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
     }
 
@@ -31,7 +32,6 @@ public class Main {
         
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
-            //System.out.println(currActor.getClass());
             if(currActor.getClass().equals(player.getClass())){
                 playerTurn(response);
             }   
@@ -47,41 +47,32 @@ public class Main {
         for(Enemy enemy: enemyList){
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
-        int numResponse = 3;
-        while(numResponse>2 || numResponse<0){
-            System.out.println("Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-            numResponse = input.nextInt();
-            if(numResponse>2 || numResponse<0){
-                System.out.println("Please enter a valid number");
-            }
-        }
+        int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         if(numResponse==1){
             int order = 1;
             List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
-            System.out.println("Choose your attack!");
             for(Attack attack:attackList){
             System.out.println(order+" "+attack.getName());
             order++;
             }
-            int attackResponse = 3; //one greater than the number of available attacks, get list length
-            while(attackResponse>2 || attackResponse<0){
-                attackResponse = input.nextInt();
-                if(numResponse>2 || numResponse<0){
-                    System.out.println("Please enter a valid number");
-                }
+                int attackResponse = playerResponse(2, "Choose your attack!");
+                int enemyResponse = chooseEnemy(input);
+                player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1));
             }
-            int enemyResponse = chooseEnemy(input);
-            Enemy chosenEnemy = enemyList.get(enemyResponse-1);
-            if(player.useAttack(chosenEnemy, attackList.get(attackResponse-1))){
-                chosenEnemy.setDead(true);               
-            }
-        }
         else if(numResponse==2){
             int order = 1;
             List<Spell> spellList = ((MainPlayer) player).getSpells();
             for(Spell spell:spellList){
                 System.out.println(order+" "+spell);
                 order++;
+            }
+            int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
+            if(spellList.get(-1).getTargeting() == true){
+
+            }
+            else{
+                int target = chooseEnemy(input);
+                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
             }
         }
     }
@@ -121,17 +112,34 @@ public class Main {
     }
 
     public Deque<Character> generateEncounter(){
-        Deque<Character> queue = new ArrayDeque<Character>();; // 
-        //we are NOT using a priority queue, just make a list of all the characters and then sort it (either Comparable or Comparator),
-        //then add the list to a normal queue
+        Deque<Character> queue = new ArrayDeque<Character>();; 
+        List<Character> encounterList = new ArrayList<>();
+        encounterList.add(player);
+
         Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
         Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
         enemyList.add((Enemy)enemy1);
         enemyList.add((Enemy)enemy2);
         queue.add(enemy1);
-        queue.add(enemy2);
-        queue.add(player);
+        encounterList.add(enemy2);
+
+        Collections.sort(encounterList, new PriorityComparator());
+        queue.addAll(encounterList);
+
         return queue;
+    }
+
+    public int playerResponse(int numAnswers, String preamble){
+        Scanner response = new Scanner(System.in);
+        int output = 0;
+        while(output>numAnswers || output<1){
+            System.out.println(preamble);
+            output = response.nextInt();
+            if(output>numAnswers || output<0){
+                System.out.println("Please enter a valid number");
+            }
+        }
+        return output;
     }
 
     public static void main(String[] args) {
