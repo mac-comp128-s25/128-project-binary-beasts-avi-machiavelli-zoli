@@ -1,4 +1,4 @@
-public class Attack {
+public class Attack implements Skill{
     private String name;
     private double damage;
     private double chanceToHit;
