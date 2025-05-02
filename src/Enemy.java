@@ -82,7 +82,25 @@ public class Enemy extends Character{
 
     @Override
     public boolean useAttack(Character target, Attack attack) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'useAttack'");
+        Random rand = new Random();
+        double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
+        if(attack.getChanceToHit() > hitDouble){ // if the attack lands
+            double critDouble = rand.nextDouble(); // new random double in order to check whether crit or not
+            double damageDone = attack.getDamage(); // variable that tracks the total damage we will do. will be increased if crit, will stay same if not
+            if(critChance > critDouble){
+                damageDone *= critMultiplier; 
+                System.out.println("Critical Hit!");
+            }
+            target.setHealth(target.getHealth() - damageDone);
+            System.out.println("Your attack did " + damageDone + " damage!");
+            if(target.getHealth() < 0){
+                System.out.println("The target was defeated.");
+                return true;
+            }
+        }
+        else {
+            System.out.println("The attack missed!"); 
+        }
+        return false;
     }
 }

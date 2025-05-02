@@ -74,7 +74,7 @@ public class Main {
                 order++;
             }
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
-            if(spellList.get(-1).getTargeting() == true){
+            if(spellList.get(spellChoice-1).getTargeting() == true){
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
             }
             else{
