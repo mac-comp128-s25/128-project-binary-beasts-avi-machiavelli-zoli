@@ -176,8 +176,8 @@ public class Main {
         Skill thunderclap = new Spell("Thunderclap", 1, 2, true);
         possibleSpells.add(thunderclap);
 
-        possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
-        possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
+        //possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
+        //possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
 
         //Define and add all other attacks to the attackList
         Skill fellingBlow = new Attack("Felling Blow", 8, 0.6);
@@ -209,6 +209,11 @@ public class Main {
         possibleSpells.add(fireball);
         Skill obliteration = new Spell("Obliteration", 5, 8, false);
         possibleSpells.add(obliteration);
+        Skill powerWordKill = new Spell("Power Word: Kill", 6, 100, true);
+        possibleSpells.add(powerWordKill);
+
+        possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
+        possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
 
         
         //TODO define all possible attacks and spells up here
