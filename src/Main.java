@@ -58,7 +58,6 @@ public class Main {
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
         int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-        int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         if(numResponse==1){
             int order = 1;
             List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
@@ -80,14 +79,6 @@ public class Main {
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
             if(spellList.get(-1).getTargeting() == true){
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
-            }
-            else{
-                int target = chooseEnemy(input);
-                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1));
-            }
-            int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
-            if(spellList.get(-1).getTargeting() == true){
-
             }
             else{
                 int target = chooseEnemy(input);
