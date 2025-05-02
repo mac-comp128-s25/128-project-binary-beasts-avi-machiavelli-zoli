@@ -5,7 +5,7 @@ import java.util.Random;
 public class MainPlayer extends Character {
 
     private double health;
-    private double mana;
+    private int mana;
     private String name;
     private double critMultiplier;
     private double critChance;
@@ -46,6 +46,9 @@ public class MainPlayer extends Character {
             if(target.getHealth() < 0){
                 System.out.println("The target was defeated.");
                 return true;
+            }
+            else{
+                return false;
             }
         }
         else {
@@ -136,6 +139,14 @@ public class MainPlayer extends Character {
     @Override
     public int compareTo(Character target) {
         return Double.compare(this.getPriority(), target.getPriority());
+    }
+
+    public int getMana(){
+        return mana;
+    }
+
+    public void modifyMana(int input){
+        mana += input;
     }
 
 }
