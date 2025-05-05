@@ -83,6 +83,7 @@ public class Main {
                 System.out.println(order+" "+spell.getName());
                 order++;
             }
+            System.out.println("You have "+ ((MainPlayer)player).getMana() + " mana");
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
             if(spellList.get(spellChoice-1).getTargeting() == true){
                 ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
@@ -245,8 +246,13 @@ public class Main {
 
     public void addSkill(Scanner scanner, int abilityNum){
         while(abilityNum>0){
-            System.out.println("You have " + abilityNum + " ability choices remaining");
-            int numResponse = playerResponse(skillTree.keySet().size(), "Choose the type of your ability! \n1. Attack \n2. Spell \n3. Upgrade \nType the number of the abilty type");
+            System.out.println("You have " + abilityNum + " ability choices remaining. Choose the type of your ability!");
+            int abilityOrder = 1;
+            for(String key : skillTree.keySet()){
+                System.out.println(abilityOrder+" "+key);
+                abilityOrder++;
+            }
+            int numResponse = playerResponse(skillTree.keySet().size(), "Type the number of the abilty type.");
             if(numResponse == 1){
                 int order = 1;
                 for(Skill attack : possibleAttacks){
