@@ -266,7 +266,7 @@ public class Main {
                 }
                 int spellChoice = playerResponse(possibleSpells.size(), "Choose a spell!");
                 ((MainPlayer) player).getSpells().add((Spell) possibleSpells.get(spellChoice-1));
-                possibleAttacks.remove(spellChoice-1);
+                possibleSpells.remove(spellChoice-1);
                 abilityNum--;
             }
             if(numResponse ==3){
