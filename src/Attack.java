@@ -21,4 +21,10 @@ public class Attack implements Skill{
     public String getName(){
         return name;
     }
+
+    @Override
+    public boolean healthBonus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'healthBonus'");
+    }
 }

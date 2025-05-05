@@ -155,4 +155,11 @@ public class MainPlayer extends Character {
         mana += input;
     }
 
+    public double getCritMultiplier(){
+        return critMultiplier;
+    }
+    public void  setCritMultiplier(double input){
+        critMultiplier = input;
+    }
+
 }

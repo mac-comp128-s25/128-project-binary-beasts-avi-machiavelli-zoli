@@ -27,5 +27,11 @@ public class Spell implements Skill{
         return damage;
     }
 
+    @Override
+    public boolean healthBonus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'healthBonus'");
+    }
+
 
 }

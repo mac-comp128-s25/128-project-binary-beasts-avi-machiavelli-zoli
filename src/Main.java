@@ -24,6 +24,7 @@ public class Main {
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
+        possibleUpgrades = new ArrayList<>();
         skillTree = new TreeMap<>();
         skillSetup();
     }
@@ -218,18 +219,25 @@ public class Main {
         Skill powerWordKill = new Spell("Power Word: Kill", 11, 100, true);
         possibleSpells.add(powerWordKill);
 
+        //Define and add all upgrades to the upgradeList
+        Skill healthBonus = new Upgrade("Health Bonus x 1.5", true);
+        possibleUpgrades.add(healthBonus);
+        Skill critBonus = new Upgrade("Crit Bonus x 1.1", false);
+        possibleUpgrades.add(critBonus);
+
         //possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
         //possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
 
         skillTree.put("Attacks", possibleAttacks);
         skillTree.put("Spells", possibleSpells); 
+        skillTree.put("Upgrades", possibleUpgrades); 
         //upgrades
     }
 
     public void addSkill(Scanner scanner, int abilityNum){
         while(abilityNum>0){
             System.out.println("You have " + abilityNum + " ability choices remaining");
-            int numResponse = playerResponse(skillTree.keySet().size(), "Choose the type of your ability! \n1. Attack \n2. Spell \nType the number of the abilty type");
+            int numResponse = playerResponse(skillTree.keySet().size(), "Choose the type of your ability! \n1. Attack \n2. Spell \n3. Upgrade \nType the number of the abilty type");
             if(numResponse == 1){
                 int order = 1;
                 for(Skill attack : possibleAttacks){
@@ -254,10 +262,17 @@ public class Main {
             }
             if(numResponse ==3){
                 int order = 1;
-                for(Skill spell : possibleSpells){
-                    System.out.println(order+" "+spell.getName());
+                for(Skill upgrade : possibleUpgrades){
+                    System.out.println(order+" "+upgrade.getName());
                     order++;
                 }
+                int upgradeChoice = playerResponse(possibleUpgrades.size(), "Choose an upgrade!");
+                if(possibleUpgrades.get(upgradeChoice-1).healthBonus()){
+                    ((MainPlayer) player).setHealth(((MainPlayer) player).getHealth() *1.5);
+                } else {
+                    ((MainPlayer) player).setCritMultiplier(((MainPlayer) player).getCritMultiplier() * 1.1);
+                }
+                abilityNum--;
             }
         }
 
