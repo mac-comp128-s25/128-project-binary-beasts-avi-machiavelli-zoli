@@ -59,6 +59,7 @@ public class Main {
     }
 
     public void playerTurn(Scanner input){
+        System.out.println("You have " + player.getHealth() + " health remaining.");
         for(Enemy enemy: enemyList){
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
@@ -272,7 +273,7 @@ public class Main {
                 }
                 int spellChoice = playerResponse(possibleSpells.size(), "Choose a spell!");
                 ((MainPlayer) player).getSpells().add((Spell) possibleSpells.get(spellChoice-1));
-                possibleAttacks.remove(spellChoice-1);
+                possibleSpells.remove(spellChoice-1);
                 abilityNum--;
             }
             if(numResponse ==3){
