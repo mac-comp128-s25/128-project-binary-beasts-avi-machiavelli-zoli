@@ -54,7 +54,7 @@ public class Enemy extends Character{
                 System.out.println("Critical Hit!");
             }
             target.setHealth(target.getHealth() - damageDone);
-            System.out.println("Your attack did " + damageDone + "Damage!");
+            System.out.println("The attack did " + damageDone + " damage!");
             if(target.getHealth() < 0){
                 System.out.println(target.getName() + " was defeated.");
             }
@@ -92,7 +92,7 @@ public class Enemy extends Character{
                 System.out.println("Critical Hit!");
             }
             target.setHealth(target.getHealth() - damageDone);
-            System.out.println("Your attack did " + damageDone + " damage!");
+            System.out.println("The enemy attack did " + damageDone + " damage!");
             if(target.getHealth() < 0){
                 System.out.println("The target was defeated.");
                 return true;
