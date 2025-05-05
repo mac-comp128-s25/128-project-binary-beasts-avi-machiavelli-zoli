@@ -59,6 +59,7 @@ public class Main {
     }
 
     public void playerTurn(Scanner input){
+        System.out.println("You have " + player.getHealth() + " health remaining.");
         for(Enemy enemy: enemyList){
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
         }
