@@ -1,11 +1,20 @@
-public class Upgrade {
+public class Upgrade implements Skill{
 
     private String name;
-    boolean type; //true if health, false if crit bonus
+    private boolean type; //true if health, false if crit bonus
     
-    public Upgrade(){
-
+    public Upgrade(String name, boolean type){
+        this.name = name;
+        this.type = type;
     }
 
-    //toString that only 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public boolean healthBonus(){
+        return type;
+    }
+
 }

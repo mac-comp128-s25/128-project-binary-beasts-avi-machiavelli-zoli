@@ -15,6 +15,8 @@ public class Main {
     private TreeMap<String, List<Skill>> skillTree;
     private List<Skill> possibleAttacks;
     private List<Skill> possibleSpells;
+    private List<Skill> possibleUpgrades;
+
     private Deque<Character> encounter;
 
     public Main(){
@@ -32,6 +34,7 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
+        addSkill(response, 3);
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         encounter = generateEncounter();
@@ -212,21 +215,52 @@ public class Main {
         possibleSpells.add(fireball);
         Skill obliteration = new Spell("Obliteration", 5, 8, false);
         possibleSpells.add(obliteration);
-        Skill powerWordKill = new Spell("Power Word: Kill", 6, 100, true);
+        Skill powerWordKill = new Spell("Power Word: Kill", 11, 100, true);
         possibleSpells.add(powerWordKill);
 
-        possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
-        possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
-
-        
-        //TODO define all possible attacks and spells up here
+        //possibleAttacks.forEach((x) -> {((MainPlayer) player).getAttacks().add((Attack) x);});
+        //possibleSpells.forEach((x) -> {((MainPlayer) player).getSpells().add((Spell) x);});
 
         skillTree.put("Attacks", possibleAttacks);
         skillTree.put("Spells", possibleSpells); 
         //upgrades
     }
 
-    public void addSkill(){
+    public void addSkill(Scanner scanner, int abilityNum){
+        while(abilityNum>0){
+            System.out.println("You have " + abilityNum + " ability choices remaining");
+            int numResponse = playerResponse(skillTree.keySet().size(), "Choose the type of your ability! \n1. Attack \n2. Spell \nType the number of the abilty type");
+            if(numResponse == 1){
+                int order = 1;
+                for(Skill attack : possibleAttacks){
+                    System.out.println(order+" "+attack.getName());
+                    order++;
+                }
+                int attackChoice = playerResponse(possibleAttacks.size(), "Choose an attack!");
+                ((MainPlayer) player).getAttacks().add((Attack) possibleAttacks.get(attackChoice-1));
+                possibleAttacks.remove(attackChoice-1);
+                abilityNum--;
+            }
+            if(numResponse == 2){
+                int order = 1;
+                for(Skill spell : possibleSpells){
+                    System.out.println(order+" "+spell.getName());
+                    order++;
+                }
+                int spellChoice = playerResponse(possibleSpells.size(), "Choose a spell!");
+                ((MainPlayer) player).getSpells().add((Spell) possibleSpells.get(spellChoice-1));
+                possibleAttacks.remove(spellChoice-1);
+                abilityNum--;
+            }
+            if(numResponse ==3){
+                int order = 1;
+                for(Skill spell : possibleSpells){
+                    System.out.println(order+" "+spell.getName());
+                    order++;
+                }
+            }
+        }
+
         //if the skill is already in the player's list of abilities, then don't allow them to take it
         //otherwise, add the skill to the proper list (attack/spell), and add it to the greater list of all skills
     }
