@@ -38,7 +38,7 @@ public class Main {
         addSkill(response, 3);
 
         //System.out.println("Choose your attacks! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-        encounter = generateEncounter();
+        encounter = generateEncounter(2,1);
         
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
@@ -50,6 +50,9 @@ public class Main {
                 if(enemyTurn(currActor)){
                     encounter.offer(currActor);
                 }
+            }
+            if(enemyList.size()<=0){
+                encounter = generateEncounter(2,1);
             }     
         }
         System.out.println("You died! Game over!");
@@ -129,17 +132,23 @@ public class Main {
         return enemyResponse;
     }
 
-    public Deque<Character> generateEncounter(){
+    public Deque<Character> generateEncounter(int enemyCount, double difficulty){
         Deque<Character> queue = new ArrayDeque<Character>();; 
         List<Character> encounterList = new ArrayList<>();
         encounterList.add(player);
 
-        Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
-        Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
-        enemyList.add((Enemy)enemy1);
-        enemyList.add((Enemy)enemy2);
-        queue.add(enemy1);
-        encounterList.add(enemy2);
+        for(int i = 0; i<enemyCount;i++){
+            Character enemyCharacter = new Enemy("Enemy " + (i+1),10*difficulty, difficulty, .1*difficulty, 10-(difficulty/2), difficulty/5, difficulty);
+            enemyList.add((Enemy)enemyCharacter);
+            encounterList.add((Enemy)enemyCharacter);
+        }
+
+        // Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
+        // Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
+        // enemyList.add((Enemy)enemy1);
+        // enemyList.add((Enemy)enemy2);
+        // queue.add(enemy1);
+        // encounterList.add(enemy2);
 
         Collections.sort(encounterList, new PriorityComparator());
         queue.addAll(encounterList);
