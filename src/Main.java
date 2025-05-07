@@ -26,7 +26,7 @@ public class Main {
      * Constructor for the Main object.
      */
     public Main(){
-        player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
+        player = new MainPlayer(100, 10, 5, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
         possibleSpells = new ArrayList<>();
