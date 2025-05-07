@@ -1,9 +1,9 @@
 public class Upgrade implements Skill{
 
     private String name;
-    private boolean type; //true if health, false if crit bonus
+    private int type; //1 if health bonus, 0 if crit bonus, -1 if mana bonus
     
-    public Upgrade(String name, boolean type){
+    public Upgrade(String name, int type){
         this.name = name;
         this.type = type;
     }
@@ -13,7 +13,7 @@ public class Upgrade implements Skill{
         return name;
     }
 
-    public boolean healthBonus(){
+    public int bonusType(){
         return type;
     }
 

@@ -106,14 +106,6 @@ public class MainPlayer extends Character {
         attackList.add(attack);
     }
 
-    public List<Skill> getSkills(){
-        return skillList;
-    }
-
-    public void addSkill(Skill skill){
-        skillList.add(skill);
-    }
-
     @Override
     public double getHealth() {
         return health;

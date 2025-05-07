@@ -28,9 +28,8 @@ public class Spell implements Skill{
     }
 
     @Override
-    public boolean healthBonus() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'healthBonus'");
+    public int bonusType() {
+        return 5;
     }
 
 
