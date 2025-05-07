@@ -1,3 +1,6 @@
-# Project Title Goes Here
+# Battle of the Binary Beasts
 
-Info about your project goes here
+Our final project is a text-based adventure game. To play the game, simply run the main method in the Main class. The project uses scanners, and to play the game simply follow the prompts provided by typing in the numbers that correspond to the choices you would like to make. The game ends when you as the main player run out of health. As you go, be strategic about what attacks, spells, and upgrades you choose to make it as far as you possibly can!
+
+
+Lots of the work in the beginning ended up being planning out what the game was actually going to look like on paper as opposed to getting the code for it to work. Because we planned this out well, once we started coding we were actually able to implement a lot of cool things that we didn't originally have plans because we had a really good base structure for how the game was going to work. As such, if we were to work on this project for a few more weeks, with the structure that we now have it would not be difficult to make the game more complex and advanced.
