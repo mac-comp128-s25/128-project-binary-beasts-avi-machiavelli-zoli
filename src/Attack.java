@@ -23,7 +23,7 @@ public class Attack implements Skill{
     }
 
     @Override
-    public int bonusType() {
-        return 5;
+    public boolean bonusType() {
+        return false;
     }
 }

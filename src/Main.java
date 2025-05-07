@@ -1,7 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
@@ -35,7 +34,8 @@ public class Main {
         String name = response.nextLine();
         ((MainPlayer) player).setName(name);
         System.out.println("This is the story of " + name);
-        addSkill(response, 3);
+        initializeStartingSkills();
+        addSkills(response, 3);
 
         encounter = generateEncounter(2,1);
         
@@ -134,6 +134,7 @@ public class Main {
     }
 
     public Deque<Character> generateEncounter(int enemyCount, double difficulty){
+        System.out.println("Combat begins!");
         Deque<Character> queue = new ArrayDeque<Character>();; 
         List<Character> encounterList = new ArrayList<>();
         encounterList.add(player);
@@ -178,7 +179,7 @@ public class Main {
     }
 
     public void skillSetup(){
-        //Define and add all intial attacks to the attackList
+        //Define and add all intial attacks to the player's attackList
         Skill regular = new Attack("Regular Attack", 4, 0.75);
         ((MainPlayer) player).getAttacks().add((Attack)regular);
         Skill trueCrit = new Attack("True Critical", 2, 1.00);
@@ -186,11 +187,11 @@ public class Main {
         Skill terribleSlash = new Attack("Terrible Slash", 1, 0.5);
         ((MainPlayer) player).getAttacks().add((Attack)terribleSlash);
 
-        //Define and add all intial spells to the spellList
+        //Define and add all intial spells to the player's spellList
         Skill thunderclap = new Spell("Thunderclap", 1, 2, true);
         ((MainPlayer) player).getSpells().add((Spell)thunderclap);
 
-        //Define and add all other attacks to the attackList
+        //Define and add all other attacks to the possibleAttacks list
         Skill fellingBlow = new Attack("Felling Blow", 8, 0.6);
         possibleAttacks.add(fellingBlow);
         Skill giantsBlade = new Attack("Giant's Blade", 6, 0.7);
@@ -200,7 +201,7 @@ public class Main {
         Skill strikeOfTheWind = new Attack("Strike of the Wind", 3, 0.95);
         possibleAttacks.add(strikeOfTheWind);
 
-        //Define and add all other spells to the spellList
+        //Define and add all other spells to the possibleSpells list
         Skill holyFlame = new Spell("Holy Flame", 1, 4, false);
         possibleSpells.add(holyFlame);
         Skill shatter = new Spell("Shatter", 2, 3, true);
@@ -222,10 +223,10 @@ public class Main {
         Skill powerWordKill = new Spell("Power Word: Kill", 11, 100, true);
         possibleSpells.add(powerWordKill);
 
-        //Define and add all upgrades to the upgradeList
-        Skill healthBonus = new Upgrade("Health Bonus x 1.5", 1);
+        //Define and add all upgrades to the possibleUpgrades list
+        Skill healthBonus = new Upgrade("Health Bonus x 1.5", true);
         possibleUpgrades.add(healthBonus);
-        Skill critBonus = new Upgrade("Crit Bonus x 1.1", 0);
+        Skill critBonus = new Upgrade("Crit Bonus x 1.1", false);
         possibleUpgrades.add(critBonus);
 
         skillTree.put("Attacks", possibleAttacks);
@@ -243,14 +244,14 @@ public class Main {
         }
         List<Spell> spellList = ((MainPlayer) player).getSpells();
         order =1; 
-        System.out.println("Your starting attacks are:");
+        System.out.println("Your starting spells are:");
         for(Spell spell:spellList){
             System.out.println(order+" "+spell.getName()+": costs "+((Spell)spell).getManaCost()+" mana, deals "+((Spell)spell).getDamage()+" damage, and targets all enemies:" +((Spell)spell).getTargeting());
             order++;
         }
     }
 
-    public void addSkill(Scanner scanner, int abilityNum){
+    public void addSkills(Scanner scanner, int abilityNum){
         while(abilityNum>0){
             System.out.println("You have "+ ((MainPlayer)player).getAttacks().size() + " attacks, and " + ((MainPlayer)player).getSpells().size() + " spells.");
             System.out.println("You have " + abilityNum + " ability choices remaining. Choose the type of your ability!");
@@ -259,7 +260,7 @@ public class Main {
                 System.out.println(abilityOrder+" "+key);
                 abilityOrder++;
             }
-            int numResponse = playerResponse(skillTree.keySet().size(), "Type the number of the abilty type.");
+            int numResponse = playerResponse(skillTree.keySet().size(), "Type the number of the ability type.");
             if(numResponse == 1){
                 int order = 1;
                 for(Skill attack : possibleAttacks){
@@ -289,15 +290,15 @@ public class Main {
                     order++;
                 }
                 int upgradeChoice = playerResponse(possibleUpgrades.size(), "Choose an upgrade!");
-                if(possibleUpgrades.get(upgradeChoice-1).bonusType() == 1){
+                if(possibleUpgrades.get(upgradeChoice-1).bonusType()){
                     ((MainPlayer) player).setHealth(((MainPlayer) player).getHealth() *1.5);
-                }
                 } else {
                     ((MainPlayer) player).setCritMultiplier(((MainPlayer) player).getCritMultiplier() * 1.1);
                 }
                 abilityNum--;
             }
         }
+    }
 
     public static void main(String[] args) {
         Main main = new Main();
