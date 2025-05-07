@@ -5,13 +5,14 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.jar.Manifest;
 
 /**
  * Main class that runs the RPG.
  */
 public class Main {
 
-    private Character player;
+    private MainPlayer player;
     private PriorityComparator priorityComparator = new PriorityComparator();
     private List<Enemy> enemyList;
     private TreeMap<String, List<Skill>> skillTree;
@@ -41,13 +42,14 @@ public class Main {
         Scanner response = new Scanner(System.in);
         System.out.println("Enter your name");
         String name = response.nextLine();
-        ((MainPlayer) player).setName(name);
+        player.setName(name);
         System.out.println("This is the story of " + name);
         initializeStartingSkills();
         addSkills(response, 3);
 
         encounter = generateEncounter(2,1);
-        
+        int enemyCount = 2;
+        double difficulty = 1;
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
             if(currActor.getClass().equals(player.getClass())){
@@ -60,7 +62,12 @@ public class Main {
                 }
             }
             if(enemyList.size()<=0){
-                encounter = generateEncounter(2,1);
+                difficulty+=1;
+                if(difficulty%2==1){
+                    enemyCount+=1;
+                }
+                addSkills(response, 1);
+                encounter = generateEncounter(enemyCount,difficulty);
             }     
         }
         System.out.println("You died! Game over!");
@@ -78,12 +85,12 @@ public class Main {
         int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
         if(numResponse==1){
             int order = 1;
-            List<Attack> attackList = ((MainPlayer) player).getAttacks(); 
+            List<Attack> attackList =  player.getAttacks(); 
             for(Attack attack:attackList){
             System.out.println(order+" "+attack.getName()+": deals "+((Attack)attack).getDamage()+" damage, and has a " + ((Attack)attack).getChanceToHit()+ " chance to hit");
             order++;
             }
-                int attackResponse = playerResponse(((MainPlayer)player).attackList.size(), "Choose your attack!");
+                int attackResponse = playerResponse(player.attackList.size(), "Choose your attack!");
                 int enemyResponse = chooseEnemy(input);
                 if(player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1))){
                     enemyList.get(enemyResponse-1).setDead(true);
@@ -91,24 +98,25 @@ public class Main {
             }
         else if(numResponse==2){
             int order = 1;
-            System.out.println("You have "+ ((MainPlayer)player).getMana() + " mana");
-            List<Spell> spellList = ((MainPlayer) player).getSpells();
+            System.out.println("You have "+player.getMana() + " mana");
+            List<Spell> spellList = player.getSpells();
             for(Spell spell:spellList){
                 System.out.println(order+" "+spell.getName()+": costs "+((Spell)spell).getManaCost()+" mana, deals "+((Spell)spell).getDamage()+" damage, and targets all enemies:" +((Spell)spell).getTargeting());
                 order++;
             }
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
             if(spellList.get(spellChoice-1).getTargeting() == true){
-                ((MainPlayer)player).useSpell(spellList.get(spellChoice-1), enemyList);
+                player.useSpell(spellList.get(spellChoice-1), enemyList);
                     
             }
             else{
                 int target = chooseEnemy(input);
-                if(((MainPlayer)player).useSpell(spellList.get(spellChoice-1),enemyList.get(target-1))){
+                if(player.useSpell(spellList.get(spellChoice-1),enemyList.get(target-1))){
                     enemyList.get(target-1).setDead(true);
                 }
             }
         }
+        player.modifyMana(1);
     }
 
     /**
@@ -209,15 +217,15 @@ public class Main {
     public void skillSetup(){
         //Define and add all intial attacks to the player's attackList
         Skill regular = new Attack("Regular Attack", 4, 0.75);
-        ((MainPlayer) player).getAttacks().add((Attack)regular);
+        player.getAttacks().add((Attack)regular);
         Skill trueCrit = new Attack("True Critical", 2, 1.00);
-        ((MainPlayer) player).getAttacks().add((Attack)trueCrit);
+        player.getAttacks().add((Attack)trueCrit);
         Skill terribleSlash = new Attack("Terrible Slash", 1, 0.5);
-        ((MainPlayer) player).getAttacks().add((Attack)terribleSlash);
+        player.getAttacks().add((Attack)terribleSlash);
 
         //Define and add all intial spells to the player's spellList
         Skill thunderclap = new Spell("Thunderclap", 1, 2, true);
-        ((MainPlayer) player).getSpells().add((Spell)thunderclap);
+        player.getSpells().add((Spell)thunderclap);
 
         //Define and add all other attacks to the possibleAttacks list
         Skill fellingBlow = new Attack("Felling Blow", 8, 0.6);
@@ -266,14 +274,14 @@ public class Main {
      * Prints the player's starting skills and their stats.
      */
     public void initializeStartingSkills(){
-        List<Attack> attackList = ((MainPlayer) player).getAttacks();
+        List<Attack> attackList = player.getAttacks();
         int order =1; 
         System.out.println("Your starting attacks are:");
         for(Attack attack:attackList){
             System.out.println(order+" "+attack.getName()+": deals "+((Attack)attack).getDamage()+" damage, and has a " + ((Attack)attack).getChanceToHit()+ " chance to hit");
             order++;
         }
-        List<Spell> spellList = ((MainPlayer) player).getSpells();
+        List<Spell> spellList = player.getSpells();
         order =1; 
         System.out.println("Your starting spells are:");
         for(Spell spell:spellList){
@@ -290,7 +298,7 @@ public class Main {
      */
     public void addSkills(Scanner scanner, int abilityNum){
         while(abilityNum>0){
-            System.out.println("You have "+ ((MainPlayer)player).getAttacks().size() + " attacks, and " + ((MainPlayer)player).getSpells().size() + " spells.");
+            System.out.println("You have "+ player.getAttacks().size() + " attacks, and " + player.getSpells().size() + " spells.");
             System.out.println("You have " + abilityNum + " ability choices remaining. Choose the type of your ability!");
             int abilityOrder = 1;
             for(String key : skillTree.keySet()){
@@ -305,7 +313,7 @@ public class Main {
                     order++;
                 }
                 int attackChoice = playerResponse(possibleAttacks.size(), "Choose an attack!");
-                ((MainPlayer) player).getAttacks().add((Attack) possibleAttacks.get(attackChoice-1));
+                player.getAttacks().add((Attack) possibleAttacks.get(attackChoice-1));
                 possibleAttacks.remove(attackChoice-1);
                 abilityNum--;
             }
@@ -316,7 +324,7 @@ public class Main {
                     order++;
                 }
                 int spellChoice = playerResponse(possibleSpells.size(), "Choose a spell!");
-                ((MainPlayer) player).getSpells().add((Spell) possibleSpells.get(spellChoice-1));
+                player.getSpells().add((Spell) possibleSpells.get(spellChoice-1));
                 possibleSpells.remove(spellChoice-1);
                 abilityNum--;
             }
@@ -328,9 +336,9 @@ public class Main {
                 }
                 int upgradeChoice = playerResponse(possibleUpgrades.size(), "Choose an upgrade!");
                 if(possibleUpgrades.get(upgradeChoice-1).bonusType()){
-                    ((MainPlayer) player).setHealth(((MainPlayer) player).getHealth() *1.5);
+                    player.setHealth(player.getHealth() *1.5);
                 } else {
-                    ((MainPlayer) player).setCritMultiplier(((MainPlayer) player).getCritMultiplier() * 1.1);
+                    player.setCritMultiplier(player.getCritMultiplier() * 1.1);
                 }
                 abilityNum--;
             }

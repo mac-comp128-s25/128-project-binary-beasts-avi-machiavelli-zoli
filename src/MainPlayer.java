@@ -62,7 +62,7 @@ public class MainPlayer extends Character {
             }
             target.setHealth(target.getHealth() - damageDone);
             System.out.println("Your attack did " + damageDone + " damage!");
-            if(target.getHealth() < 0){
+            if(target.getHealth() <= 0){
                 System.out.println("The target was defeated.");
                 return true;
             }
@@ -89,7 +89,7 @@ public class MainPlayer extends Character {
         }
         enemy.setHealth(enemy.getHealth()-spell.getDamage());
         System.out.println("Your attack did " + spell.getDamage() + " damage!");
-        if(enemy.getHealth() < 0){
+        if(enemy.getHealth() <= 0){
             System.out.println("The target was defeated.");
             return true;
         }
@@ -112,7 +112,7 @@ public class MainPlayer extends Character {
         for(Enemy enemy : enemies){
             enemy.setHealth(enemy.getHealth()-spell.getDamage());
             System.out.println("Your attack did " + spell.getDamage() + " damage!");
-            if(enemy.getHealth() < 0){
+            if(enemy.getHealth() <= 0){
                 System.out.println("The target was defeated.");
                 enemy.setDead(true);
                 flag = true;
