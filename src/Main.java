@@ -78,6 +78,7 @@ public class Main {
      * @param input scanner
      */
     public void playerTurn(Scanner input){
+        System.out.println("You gain 1 mana");
         System.out.println("You have " + player.getHealth() + " health remaining.");
         for(Enemy enemy: enemyList){
             System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
