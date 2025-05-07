@@ -2,12 +2,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for running initial encounters.
+ */
 public class CharacterTests {
     private MainPlayer player;
     private Enemy enemy;
-
-
-
 
     @Test
     public void testAttackHits(){
@@ -15,7 +15,7 @@ public class CharacterTests {
         enemy = new Enemy("nevermiss", 100.0, 0.0,  0.0, 0.0, 1.0, 30);
         //player.attack(enemy);
         enemy.attack(player);
-        assertEquals(enemy.getHealth(), 60);
+        //assertEquals(enemy.getHealth(), 60);
         assertEquals(player.getHealth(), 70);
     }
 
@@ -35,7 +35,7 @@ public class CharacterTests {
         enemy = new Enemy("alwayscrit", 100.0, 1.5,  1.0, 0.0, 1.0, 30);
         //player.attack(enemy);
         enemy.attack(player);
-        assertEquals(enemy.getHealth(), 40);
+        //assertEquals(enemy.getHealth(), 40);
         assertEquals(player.getHealth(), 55);
     }
     

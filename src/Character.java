@@ -1,6 +1,9 @@
+/**
+ * Interface for the MainPlayer and the Enemies
+ */
 public abstract class Character implements Comparable<Character>{
     
-    public abstract boolean useAttack(Character target, Attack attack); //remove this
+    public abstract boolean useAttack(Character target, Attack attack);
 
     public abstract double getHealth();
 

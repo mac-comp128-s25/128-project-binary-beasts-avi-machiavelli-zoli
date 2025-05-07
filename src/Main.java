@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+/**
+ * Main class that runs the RPG.
+ */
 public class Main {
 
     private Character player;
@@ -18,6 +21,9 @@ public class Main {
 
     private Deque<Character> encounter;
 
+    /**
+     * Constructor for the Main object.
+     */
     public Main(){
         player = new MainPlayer(100, 10, 100, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
@@ -28,6 +34,9 @@ public class Main {
         skillSetup();
     }
 
+    /**
+     * Runs the game.
+     */
     public void mainGame(){
         Scanner response = new Scanner(System.in);
         System.out.println("Enter your name");
@@ -57,6 +66,10 @@ public class Main {
         System.out.println("You died! Game over!");
     }
 
+    /**
+     * Runs the player's turn
+     * @param input scanner
+     */
     public void playerTurn(Scanner input){
         System.out.println("You have " + player.getHealth() + " health remaining.");
         for(Enemy enemy: enemyList){
@@ -98,6 +111,11 @@ public class Main {
         }
     }
 
+    /**
+     * Runs the enemy's turn.
+     * @param enemy
+     * @return false if the enemy is dead, true if it's alive
+     */
     public boolean enemyTurn(Character enemy){
         if(((Enemy) enemy).getDead()){
             List<Enemy> newEnemyList = new ArrayList<Enemy>();
@@ -158,6 +176,12 @@ public class Main {
         return queue;
     }
 
+    /**
+     * Method for getting a player's response/
+     * @param numAnswers the number of acceptable answers
+     * @param preamble the preamble to the question
+     * @return the number of the response
+     */
     public int playerResponse(int numAnswers, String preamble){
         Scanner response = new Scanner(System.in);
         int output = 0;
@@ -178,6 +202,10 @@ public class Main {
         return output;
     }
 
+    /**
+     * Creates all the Skill objects. Adds starting attacks/spells to the player's lists, and adds all other 
+     * Skills to the associated possible lists.
+     */
     public void skillSetup(){
         //Define and add all intial attacks to the player's attackList
         Skill regular = new Attack("Regular Attack", 4, 0.75);
@@ -234,6 +262,9 @@ public class Main {
         skillTree.put("Upgrades", possibleUpgrades); 
     }
 
+    /**
+     * Prints the player's starting skills and their stats.
+     */
     public void initializeStartingSkills(){
         List<Attack> attackList = ((MainPlayer) player).getAttacks();
         int order =1; 
@@ -251,6 +282,12 @@ public class Main {
         }
     }
 
+    /**
+     * Runs the skill tree. Allows the player to add a designated amount of Skills, and allows them to choose from ability 
+     * types and the different Skills associated with that ability.
+     * @param scanner
+     * @param abilityNum the number of abilities that the player can choose from
+     */
     public void addSkills(Scanner scanner, int abilityNum){
         while(abilityNum>0){
             System.out.println("You have "+ ((MainPlayer)player).getAttacks().size() + " attacks, and " + ((MainPlayer)player).getSpells().size() + " spells.");
@@ -300,6 +337,10 @@ public class Main {
         }
     }
 
+    /**
+     * Main method. Runs the game.
+     * @param args
+     */
     public static void main(String[] args) {
         Main main = new Main();
         main.mainGame();

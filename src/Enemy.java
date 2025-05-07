@@ -1,6 +1,9 @@
 import java.util.Random;
 import java.util.random.*;
 
+/**
+ * Class for the Enemies in the game.
+ */
 public class Enemy extends Character{
     private double health;
     private double critMultiplier;
@@ -11,6 +14,16 @@ public class Enemy extends Character{
     private String name;
     private boolean dead;
 
+    /**
+     * Constructor for the Enemy object
+     * @param name
+     * @param health
+     * @param critMultiplier
+     * @param critChance
+     * @param priority
+     * @param hitChance
+     * @param attackDamage
+     */
     public Enemy(String name, double health, double critMultiplier, double critChance, double priority, double hitChance, double attackDamage){
         this.name = name;
         this.health = health;
@@ -22,27 +35,50 @@ public class Enemy extends Character{
         this.dead = false;
     }
 
+    /**
+     * Accessor method for the enemy's health
+     */
     public double getHealth(){
         return health;
     }
 
+    /**
+     * Mutator method for the enemy's health
+     * @param newHealth
+     */
     public void setHealth(double newHealth){
         health = newHealth;
     }
 
+    /**
+     * Accessor method for the enemy's name
+     * @return name
+     */
     public String getName(){
         return name;
     }
 
+    /**
+     * Accessor method for the enemy's status
+     * @return whether the enemy is dead (true) or alive (false)
+     */
     public boolean getDead(){
         return dead;
     }
 
+    /**
+     * Mutator method for the enemy's dead/alive status
+     * @param status
+     */
     public void setDead(boolean status){
         dead = status;
     }
 
-    
+    /**
+     * Method for the enemy to attack a target
+     * @param target the Character to be targeted
+     * @return the success of the attack, whether it hits/misses
+     */
     public boolean attack(Character target){
         Random rand = new Random();
         double hitDouble = rand.nextDouble(); // creates random double between 0 and 1 to check whether the attack lands
@@ -66,20 +102,27 @@ public class Enemy extends Character{
         }
     }
 
+    /**
+     * Accessor method for the enemy's priority
+     * @return priority
+     */
     public double getPriority(){
         return priority;
     }
 
-    // @Override
-    // public int compareTo(Character character) {
-    //     return Double.compare(this.getPriority(), character.getPriority());
-    // }
-
+    /**
+     * Overriden compareTo method. Compares two characters based on their priority
+     */
     @Override
     public int compareTo(Character target) {
         return Double.compare(this.getPriority(), target.getPriority());
     }
 
+    /**
+     * Method for the enemy to attack a target with a given attack.
+     * @param target the Character to be targeted by the attack
+     * @param attack the Attack that the enemy uses
+     */
     @Override
     public boolean useAttack(Character target, Attack attack) {
         Random rand = new Random();
