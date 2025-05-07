@@ -5,7 +5,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.jar.Manifest;
 
 /**
  * Main class that runs the RPG.
@@ -13,7 +12,6 @@ import java.util.jar.Manifest;
 public class Main {
 
     private MainPlayer player;
-    private PriorityComparator priorityComparator = new PriorityComparator();
     private List<Enemy> enemyList;
     private TreeMap<String, List<Skill>> skillTree;
     private List<Skill> possibleAttacks;
@@ -25,7 +23,7 @@ public class Main {
     /**
      * Constructor for the Main object.
      */
-    public Main(){
+    public Main() {
         player = new MainPlayer(50, 10, 5, 1.5, 10, 1.5, 10, null);
         enemyList = new ArrayList<>();
         possibleAttacks = new ArrayList<>();
@@ -38,7 +36,7 @@ public class Main {
     /**
      * Runs the game.
      */
-    public void mainGame(){
+    public void mainGame() {
         Scanner response = new Scanner(System.in);
         System.out.println("Enter your name");
         String name = response.nextLine();
@@ -47,72 +45,74 @@ public class Main {
         initializeStartingSkills();
         addSkills(response, 3);
 
-        encounter = generateEncounter(2,1);
+        encounter = generateEncounter(2, 1);
         int enemyCount = 2;
         double difficulty = 1;
-        while(player.getHealth()>0){
+        while (player.getHealth() > 0) {
             Character currActor = encounter.poll();
-            if(currActor.getClass().equals(player.getClass())){
+            if (currActor.getClass().equals(player.getClass())) {
                 playerTurn(response);
                 encounter.offer(currActor);
-            }   
-            else{
-                if(enemyTurn(currActor)){
+            } else {
+                if (enemyTurn(currActor)) {
                     encounter.offer(currActor);
                 }
             }
-            if(enemyList.size()<=0){
-                difficulty+=1;
-                if(difficulty%2==1){
-                    enemyCount+=1;
+            if (enemyList.size() <= 0) {
+                difficulty += 1;
+                if (difficulty % 2 == 1) {
+                    enemyCount += 1;
                 }
                 addSkills(response, 1);
-                encounter = generateEncounter(enemyCount,difficulty);
-            }     
+                encounter = generateEncounter(enemyCount, difficulty);
+            }
         }
         System.out.println("You died! Game over!");
     }
 
     /**
      * Runs the player's turn
+     * 
      * @param input scanner
      */
-    public void playerTurn(Scanner input){
+    public void playerTurn(Scanner input) {
         System.out.println("You have " + player.getHealth() + " health remaining.");
-        for(Enemy enemy: enemyList){
-            System.out.println(enemy.getName() +" has "+ enemy.getHealth() + " health");
+        for (Enemy enemy : enemyList) {
+            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " health");
         }
-        int numResponse = playerResponse(2, "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
-        if(numResponse==1){
+        int numResponse = playerResponse(2,
+            "Choose your action! \n1. Attack \n2. Spell \nType the number of the action you would like to take");
+        if (numResponse == 1) {
             int order = 1;
-            List<Attack> attackList =  player.getAttacks(); 
-            for(Attack attack:attackList){
-            System.out.println(order+" "+attack.getName()+": deals "+((Attack)attack).getDamage()+" damage, and has a " + ((Attack)attack).getChanceToHit()+ " chance to hit");
-            order++;
+            List<Attack> attackList = player.getAttacks();
+            for (Attack attack : attackList) {
+                System.out.println(order + " " + attack.getName() + ": deals " + ((Attack) attack).getDamage()
+                    + " damage, and has a " + ((Attack) attack).getChanceToHit() + " chance to hit");
+                order++;
             }
-                int attackResponse = playerResponse(player.attackList.size(), "Choose your attack!");
-                int enemyResponse = chooseEnemy(input);
-                if(player.useAttack(enemyList.get(enemyResponse-1), attackList.get(attackResponse-1))){
-                    enemyList.get(enemyResponse-1).setDead(true);
-                }
+            int attackResponse = playerResponse(player.attackList.size(), "Choose your attack!");
+            int enemyResponse = chooseEnemy(input);
+            if (player.useAttack(enemyList.get(enemyResponse - 1), attackList.get(attackResponse - 1))) {
+                enemyList.get(enemyResponse - 1).setDead(true);
             }
-        else if(numResponse==2){
+        } else if (numResponse == 2) {
             int order = 1;
-            System.out.println("You have "+player.getMana() + " mana");
+            System.out.println("You have " + player.getMana() + " mana");
             List<Spell> spellList = player.getSpells();
-            for(Spell spell:spellList){
-                System.out.println(order+" "+spell.getName()+": costs "+((Spell)spell).getManaCost()+" mana, deals "+((Spell)spell).getDamage()+" damage, and targets all enemies:" +((Spell)spell).getTargeting());
+            for (Spell spell : spellList) {
+                System.out.println(order + " " + spell.getName() + ": costs " + ((Spell) spell).getManaCost()
+                    + " mana, deals " + ((Spell) spell).getDamage() + " damage, and targets all enemies:"
+                    + ((Spell) spell).getTargeting());
                 order++;
             }
             int spellChoice = playerResponse(spellList.size(), "Choose a spell!");
-            if(spellList.get(spellChoice-1).getTargeting() == true){
-                player.useSpell(spellList.get(spellChoice-1), enemyList);
-                    
-            }
-            else{
+            if (spellList.get(spellChoice - 1).getTargeting() == true) {
+                player.useSpell(spellList.get(spellChoice - 1), enemyList);
+
+            } else {
                 int target = chooseEnemy(input);
-                if(player.useSpell(spellList.get(spellChoice-1),enemyList.get(target-1))){
-                    enemyList.get(target-1).setDead(true);
+                if (player.useSpell(spellList.get(spellChoice - 1), enemyList.get(target - 1))) {
+                    enemyList.get(target - 1).setDead(true);
                 }
             }
         }
@@ -121,62 +121,57 @@ public class Main {
 
     /**
      * Runs the enemy's turn.
+     * 
      * @param enemy
      * @return false if the enemy is dead, true if it's alive
      */
-    public boolean enemyTurn(Character enemy){
-        if(((Enemy) enemy).getDead()){
+    public boolean enemyTurn(Character enemy) {
+        if (((Enemy) enemy).getDead()) {
             List<Enemy> newEnemyList = new ArrayList<Enemy>();
-            for(Enemy oldEnemy: enemyList){
-                if(!(oldEnemy == enemy)){
+            for (Enemy oldEnemy : enemyList) {
+                if (!(oldEnemy == enemy)) {
                     newEnemyList.add(oldEnemy);
                 }
             }
             enemyList = newEnemyList;
             return false;
-        }
-        else{
+        } else {
             System.out.println("Enemy " + enemy.getName() + " attacks!");
-            ((Enemy)enemy).attack(player);
+            ((Enemy) enemy).attack(player);
             return true;
         }
     }
 
-    public int chooseEnemy(Scanner input){
+    public int chooseEnemy(Scanner input) {
         System.out.println("Choose which enemy you would like to attack:");
         int enemyNum = 1;
-        for(Enemy enemy: enemyList){
-            System.out.println(enemyNum + " " + enemy.getName() +" has "+ enemy.getHealth() + " health");
+        for (Enemy enemy : enemyList) {
+            System.out.println(enemyNum + " " + enemy.getName() + " has " + enemy.getHealth() + " health");
             enemyNum++;
         }
-        int enemyResponse = enemyList.size()+1;
-        while(enemyResponse>enemyList.size() || enemyResponse<0){
+        int enemyResponse = enemyList.size() + 1;
+        while (enemyResponse > enemyList.size() || enemyResponse < 0) {
             enemyResponse = input.nextInt();
-            if(enemyResponse>enemyList.size() || enemyResponse<0){
+            if (enemyResponse > enemyList.size() || enemyResponse < 0) {
                 System.out.println("Please enter a valid number");
             }
         }
         return enemyResponse;
     }
 
-    public Deque<Character> generateEncounter(int enemyCount, double difficulty){
+    public Deque<Character> generateEncounter(int enemyCount, double difficulty) {
         System.out.println("Combat begins!");
-        Deque<Character> queue = new ArrayDeque<Character>();; 
+        Deque<Character> queue = new ArrayDeque<Character>();
+        ;
         List<Character> encounterList = new ArrayList<>();
         encounterList.add(player);
 
-        for(int i = 0; i<enemyCount;i++){
-            Character enemyCharacter = new Enemy("Enemy " + (i+1),10*difficulty, difficulty, .1*difficulty, 10-(difficulty/2), difficulty/5, difficulty);
-            enemyList.add((Enemy)enemyCharacter);
-            encounterList.add((Enemy)enemyCharacter);
+        for (int i = 0; i < enemyCount; i++) {
+            Character enemyCharacter = new Enemy("Enemy " + (i + 1), 10 * difficulty, difficulty, .1 * difficulty,
+                10 - (difficulty / 2), difficulty / 5, difficulty);
+            enemyList.add((Enemy) enemyCharacter);
+            encounterList.add((Enemy) enemyCharacter);
         }
-
-        // Character enemy1 = new Enemy("test1",10, 0, 0, 9, 0, 0);
-        // Character enemy2 = new Enemy("test2",10, 0, 0, 9, 0, 0);
-        // enemyList.add((Enemy)enemy1);
-        // enemyList.add((Enemy)enemy2);
-        // queue.add(enemy1);
-        // encounterList.add(enemy2);
 
         Collections.sort(encounterList, new PriorityComparator());
         queue.addAll(encounterList);
@@ -186,24 +181,24 @@ public class Main {
 
     /**
      * Method for getting a player's response/
+     * 
      * @param numAnswers the number of acceptable answers
-     * @param preamble the preamble to the question
+     * @param preamble   the preamble to the question
      * @return the number of the response
      */
-    public int playerResponse(int numAnswers, String preamble){
+    public int playerResponse(int numAnswers, String preamble) {
         Scanner response = new Scanner(System.in);
         int output = 0;
-        while(output>numAnswers || output<1){
+        while (output > numAnswers || output < 1) {
             System.out.println(preamble);
-            try{
+            try {
                 output = response.nextInt();
-            }
-            catch(java.util.InputMismatchException e){
+            } catch (java.util.InputMismatchException e) {
                 System.out.println("That's not a number!");
                 response.next();
             }
-            
-            if(output>numAnswers || output<0){
+
+            if (output > numAnswers || output < 0) {
                 System.out.println("Please enter a valid number");
             }
         }
@@ -211,23 +206,23 @@ public class Main {
     }
 
     /**
-     * Creates all the Skill objects. Adds starting attacks/spells to the player's lists, and adds all other 
-     * Skills to the associated possible lists.
+     * Creates all the Skill objects. Adds starting attacks/spells to the player's lists, and adds all
+     * other Skills to the associated possible lists.
      */
-    public void skillSetup(){
-        //Define and add all intial attacks to the player's attackList
+    public void skillSetup() {
+        // Define and add all intial attacks to the player's attackList
         Skill regular = new Attack("Regular Attack", 4, 0.75);
-        player.getAttacks().add((Attack)regular);
+        player.getAttacks().add((Attack) regular);
         Skill trueCrit = new Attack("True Critical", 2, 1.00);
-        player.getAttacks().add((Attack)trueCrit);
+        player.getAttacks().add((Attack) trueCrit);
         Skill terribleSlash = new Attack("Terrible Slash", 1, 0.5);
-        player.getAttacks().add((Attack)terribleSlash);
+        player.getAttacks().add((Attack) terribleSlash);
 
-        //Define and add all intial spells to the player's spellList
+        // Define and add all intial spells to the player's spellList
         Skill thunderclap = new Spell("Thunderclap", 1, 2, true);
-        player.getSpells().add((Spell)thunderclap);
+        player.getSpells().add((Spell) thunderclap);
 
-        //Define and add all other attacks to the possibleAttacks list
+        // Define and add all other attacks to the possibleAttacks list
         Skill fellingBlow = new Attack("Felling Blow", 8, 0.6);
         possibleAttacks.add(fellingBlow);
         Skill giantsBlade = new Attack("Giant's Blade", 6, 0.7);
@@ -237,7 +232,7 @@ public class Main {
         Skill strikeOfTheWind = new Attack("Strike of the Wind", 3, 0.95);
         possibleAttacks.add(strikeOfTheWind);
 
-        //Define and add all other spells to the possibleSpells list
+        // Define and add all other spells to the possibleSpells list
         Skill holyFlame = new Spell("Holy Flame", 1, 4, false);
         possibleSpells.add(holyFlame);
         Skill shatter = new Spell("Shatter", 2, 3, true);
@@ -259,84 +254,93 @@ public class Main {
         Skill powerWordKill = new Spell("Power Word: Kill", 11, 100, true);
         possibleSpells.add(powerWordKill);
 
-        //Define and add all upgrades to the possibleUpgrades list
+        // Define and add all upgrades to the possibleUpgrades list
         Skill healthBonus = new Upgrade("Health Bonus x 1.5", true);
         possibleUpgrades.add(healthBonus);
         Skill critBonus = new Upgrade("Crit Bonus x 1.1", false);
         possibleUpgrades.add(critBonus);
 
         skillTree.put("Attacks", possibleAttacks);
-        skillTree.put("Spells", possibleSpells); 
-        skillTree.put("Upgrades", possibleUpgrades); 
+        skillTree.put("Spells", possibleSpells);
+        skillTree.put("Upgrades", possibleUpgrades);
     }
 
     /**
      * Prints the player's starting skills and their stats.
      */
-    public void initializeStartingSkills(){
+    public void initializeStartingSkills() {
         List<Attack> attackList = player.getAttacks();
-        int order =1; 
+        int order = 1;
         System.out.println("Your starting attacks are:");
-        for(Attack attack:attackList){
-            System.out.println(order+" "+attack.getName()+": deals "+((Attack)attack).getDamage()+" damage, and has a " + ((Attack)attack).getChanceToHit()+ " chance to hit");
+        for (Attack attack : attackList) {
+            System.out.println(order + " " + attack.getName() + ": deals " + ((Attack) attack).getDamage()
+                + " damage, and has a " + ((Attack) attack).getChanceToHit() + " chance to hit");
             order++;
         }
         List<Spell> spellList = player.getSpells();
-        order =1; 
+        order = 1;
         System.out.println("Your starting spells are:");
-        for(Spell spell:spellList){
-            System.out.println(order+" "+spell.getName()+": costs "+((Spell)spell).getManaCost()+" mana, deals "+((Spell)spell).getDamage()+" damage, and targets all enemies:" +((Spell)spell).getTargeting());
+        for (Spell spell : spellList) {
+            System.out.println(order + " " + spell.getName() + ": costs " + ((Spell) spell).getManaCost()
+                + " mana, deals " + ((Spell) spell).getDamage() + " damage, and targets all enemies:"
+                + ((Spell) spell).getTargeting());
             order++;
         }
     }
 
     /**
-     * Runs the skill tree. Allows the player to add a designated amount of Skills, and allows them to choose from ability 
-     * types and the different Skills associated with that ability.
+     * Runs the skill tree. Allows the player to add a designated amount of Skills, and allows them to
+     * choose from ability types and the different Skills associated with that ability.
+     * 
      * @param scanner
      * @param abilityNum the number of abilities that the player can choose from
      */
-    public void addSkills(Scanner scanner, int abilityNum){
-        while(abilityNum>0){
-            System.out.println("You have "+ player.getAttacks().size() + " attacks, and " + player.getSpells().size() + " spells.");
-            System.out.println("You have " + abilityNum + " ability choices remaining. Choose the type of your ability!");
+    public void addSkills(Scanner scanner, int abilityNum) {
+        while (abilityNum > 0) {
+            System.out.println(
+                "You have " + player.getAttacks().size() + " attacks, and " + player.getSpells().size() + " spells.");
+            System.out
+                .println("You have " + abilityNum + " ability choices remaining. Choose the type of your ability!");
             int abilityOrder = 1;
-            for(String key : skillTree.keySet()){
-                System.out.println(abilityOrder+" "+key);
+            for (String key : skillTree.keySet()) {
+                System.out.println(abilityOrder + " " + key);
                 abilityOrder++;
             }
             int numResponse = playerResponse(skillTree.keySet().size(), "Type the number of the ability type.");
-            if(numResponse == 1){
+            if (numResponse == 1) {
                 int order = 1;
-                for(Skill attack : possibleAttacks){
-                    System.out.println(order+" "+attack.getName()+": deals "+((Attack)attack).getDamage()+" damage, and has a " + ((Attack)attack).getChanceToHit()+ " chance to hit"); 
+                for (Skill attack : possibleAttacks) {
+                    System.out.println(order + " " + attack.getName() + ": deals " + ((Attack) attack).getDamage()
+                        + " damage, and has a " + ((Attack) attack).getChanceToHit() + " chance to hit");
                     order++;
                 }
                 int attackChoice = playerResponse(possibleAttacks.size(), "Choose an attack!");
-                player.getAttacks().add((Attack) possibleAttacks.get(attackChoice-1));
-                possibleAttacks.remove(attackChoice-1);
+                player.getAttacks().add((Attack) possibleAttacks.get(attackChoice - 1));
+                possibleAttacks.remove(attackChoice - 1);
                 abilityNum--;
             }
-            if(numResponse == 2){
+            if (numResponse == 2) {
                 int order = 1;
-                for(Skill spell : possibleSpells){
-                    System.out.println(order+" "+spell.getName()+": costs "+((Spell)spell).getManaCost()+" mana, deals "+((Spell)spell).getDamage()+" damage, and targets all enemies:" +((Spell)spell).getTargeting());
+                for (Skill spell : possibleSpells) {
+                    System.out.println(order + " " + spell.getName() + ": costs " + ((Spell) spell).getManaCost()
+                        + " mana, deals " + ((Spell) spell).getDamage() + " damage, and targets all enemies:"
+                        + ((Spell) spell).getTargeting());
                     order++;
                 }
                 int spellChoice = playerResponse(possibleSpells.size(), "Choose a spell!");
-                player.getSpells().add((Spell) possibleSpells.get(spellChoice-1));
-                possibleSpells.remove(spellChoice-1);
+                player.getSpells().add((Spell) possibleSpells.get(spellChoice - 1));
+                possibleSpells.remove(spellChoice - 1);
                 abilityNum--;
             }
-            if(numResponse ==3){
+            if (numResponse == 3) {
                 int order = 1;
-                for(Skill upgrade : possibleUpgrades){
-                    System.out.println(order+" "+upgrade.getName());
+                for (Skill upgrade : possibleUpgrades) {
+                    System.out.println(order + " " + upgrade.getName());
                     order++;
                 }
                 int upgradeChoice = playerResponse(possibleUpgrades.size(), "Choose an upgrade!");
-                if(possibleUpgrades.get(upgradeChoice-1).bonusType()){
-                    player.setHealth(player.getHealth() *1.5);
+                if (possibleUpgrades.get(upgradeChoice - 1).bonusType()) {
+                    player.setHealth(player.getHealth() * 1.5);
                 } else {
                     player.setCritMultiplier(player.getCritMultiplier() * 1.1);
                 }
@@ -347,6 +351,7 @@ public class Main {
 
     /**
      * Main method. Runs the game.
+     * 
      * @param args
      */
     public static void main(String[] args) {
