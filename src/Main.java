@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.jar.Manifest;
 
 public class Main {
 
@@ -38,7 +39,8 @@ public class Main {
         addSkills(response, 3);
 
         encounter = generateEncounter(2,1);
-        
+        int enemyCount = 2;
+        double difficulty = 1;
         while(player.getHealth()>0){
             Character currActor = encounter.poll();
             if(currActor.getClass().equals(player.getClass())){
@@ -51,7 +53,12 @@ public class Main {
                 }
             }
             if(enemyList.size()<=0){
-                encounter = generateEncounter(2,1);
+                difficulty+=1;
+                if(difficulty%2==1){
+                    enemyCount+=1;
+                }
+                addSkills(response, 1);
+                encounter = generateEncounter(enemyCount,difficulty);
             }     
         }
         System.out.println("You died! Game over!");
@@ -96,6 +103,7 @@ public class Main {
                 }
             }
         }
+        ((MainPlayer)player).modifyMana(1);
     }
 
     public boolean enemyTurn(Character enemy){
